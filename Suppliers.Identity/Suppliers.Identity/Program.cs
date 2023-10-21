@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Suppliers.Identity;
 using Suppliers.Identity.Data;
 using Suppliers.Identity.Model;
@@ -38,10 +39,21 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.LogoutPath = "/Auth/Logout";
 });
 
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "Styles")),
+    RequestPath = "/styles"
+});
 
 app.UseRouting();
 app.UseIdentityServer();
+
+app.MapDefaultControllerRoute();
 
 using (var scope = app.Services.CreateScope())
 {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Suppliers.Application.Products.Commands.CreateProduct;
 using Suppliers.Application.Products.Commands.DeleteProduct;
@@ -16,6 +17,7 @@ namespace Suppliers.WebApi.Controllers
         public ProductsController(IMapper mapper) => _mapper = mapper;
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<ProductListVm>> GetAll()
         {
             var query = new GetProductListQuery();
@@ -24,6 +26,7 @@ namespace Suppliers.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<ProductDetailsVm>> Get(Guid id)
         {
             var query = new GetProductDetailsQuery
@@ -35,6 +38,7 @@ namespace Suppliers.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateProductDto createProductDto)
         {
             var command = _mapper.Map<CreateProductCommand>(createProductDto);
@@ -44,6 +48,7 @@ namespace Suppliers.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult> Update([FromBody] UpdateProductDto updateProductDto)
         {
             var command = _mapper.Map<UpdateProductCommand>(updateProductDto);
@@ -53,6 +58,7 @@ namespace Suppliers.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(Guid id)
         {
             var command = new DeleteProductCommand
