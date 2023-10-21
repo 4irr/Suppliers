@@ -2,6 +2,7 @@ using Suppliers.Application;
 using Suppliers.Application.Common.Mappings;
 using Suppliers.Application.Interfaces;
 using Suppliers.Persistence;
+using Suppliers.WebApi.Middleware;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCustomExceptionHandler();
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
