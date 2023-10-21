@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace Suppliers.Domain
+namespace Suppliers.Application.Products.Commands.CreateProduct
 {
-    public class Product
+    public class CreateProductCommand : IRequest<Guid>
     {
         public Guid UserId { get; set; }
-        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public float Price { get; set; }
         public int Quantity { get; set; }
