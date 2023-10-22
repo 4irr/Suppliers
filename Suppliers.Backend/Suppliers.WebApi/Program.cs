@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Suppliers.Application;
 using Suppliers.Application.Common.Mappings;
 using Suppliers.Application.Interfaces;
 using Suppliers.Persistence;
+using Suppliers.WebApi;
 using Suppliers.WebApi.Middleware;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,8 +43,17 @@ builder.Services.AddAuthentication(config =>
         options.RequireHttpsMetadata = false;
     });
 
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI(config =>
+{
+    config.RoutePrefix= string.Empty;
+    config.SwaggerEndpoint("swagger/Suppliers API/swagger.json", "Suppliers API");
+});
 app.UseCustomExceptionHandler();
 app.UseRouting();
 app.UseHttpsRedirection();
