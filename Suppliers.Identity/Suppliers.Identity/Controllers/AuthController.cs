@@ -39,7 +39,7 @@ namespace Suppliers.Identity.Controllers
             var user = await _userManager.FindByNameAsync(model.Username);
             if(user == null)
             {
-                ModelState.AddModelError("", "User not found");
+                ModelState.AddModelError("", "Неверный логин или пароль");
                 return View(model);
             }
 
@@ -48,7 +48,7 @@ namespace Suppliers.Identity.Controllers
             {
                 return Redirect(model.ReturnUrl!);
             }
-            ModelState.AddModelError("", "LoginError");
+            ModelState.AddModelError("", "Неверный логин или пароль");
             return View(model);
         }
 

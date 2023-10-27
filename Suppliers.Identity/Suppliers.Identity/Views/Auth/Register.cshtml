@@ -1,28 +1,48 @@
 ﻿@model RegisterViewModel
 <head>
-    <link href=@Url.Content("~/styles/app.css") rel="stylesheet" type="text/css"/>
+    <link href=@Url.Content("~/Styles/app.css") rel="stylesheet" type="text/css"/>
 </head>
 <form asp-controller="Auth" asp-action="Register" method="post">
     <input type="hidden" asp-for="ReturnUrl" />
-    <div class="header">Sign Up</div>
+    <div class="header">Регистрация</div>
     <div class="block">
-        <label>Username</label>
+        <label>Логин</label>
         <input asp-for="Username" class="input" />
         <span asp-validation-for="Username"></span>
     </div>
     <div class="block">
-        <label>Password</label>
+        <label>Пароль</label>
         <input asp-for="Password" class="input" />
         <span asp-validation-for="Password"></span>
     </div>
     <div class="block">
-        <label>Confirm password</label>
+        <label>Подтвердите пароль</label>
         <input asp-for="ConfirmPassword" class="input" />
         <span asp-validation-for="ConfirmPassword"></span>
     </div>
     <div class="block">
-        <button type="submit" class="button">Sign up</button>
+        <label>Имя</label>
+        <input asp-for="FirstName" class="input" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div class="block">
+        <label>Фамилия</label>
+        <input asp-for="LastName" class="input" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div class="block">
+        <label>Возраст</label>
+        <input asp-for="Age" class="input" />
+        <span asp-validation-for="Age"></span>
+    </div>
+    <div class="block">
+        <label>Email</label>
+        <input asp-for="Email" class="input" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="block">
+        <button type="submit" class="button">Зарегистрироваться</button>
     </div>
     <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl"
-       class="switch-button">Login</a>
+       class="switch-button">Вход</a>
 </form>

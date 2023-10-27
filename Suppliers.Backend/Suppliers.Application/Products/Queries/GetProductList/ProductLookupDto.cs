@@ -10,7 +10,7 @@ namespace Suppliers.Application.Products.Queries.GetProductList
         public string Name { get; set; } = null!;
         public float Price { get; set; }
         public int Quantity { get; set; }
-        public DateTime ExpirationDate { get; set; }
+        public string? ExpirationDate { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -24,7 +24,7 @@ namespace Suppliers.Application.Products.Queries.GetProductList
                 .ForMember(productDto => productDto.Quantity,
                     opt => opt.MapFrom(product => product.Quantity))
                 .ForMember(productDto => productDto.ExpirationDate,
-                    opt => opt.MapFrom(product => product.ExpirationDate));
+                    opt => opt.MapFrom(product => product.ExpirationDate.ToLongDateString()));
         }
     }
 }

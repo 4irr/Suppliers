@@ -16,13 +16,13 @@ namespace Suppliers.Identity
             new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
             };
 
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                new ApiResource("SuppliersWebAPI", "Web API", new [] { JwtClaimTypes.Name })
+                new ApiResource("SuppliersWebAPI", "Web API", new [] { JwtClaimTypes.Name, JwtClaimTypes.Role })
                 {
                     Scopes = { "SuppliersWebAPI" }
                 }
@@ -40,15 +40,15 @@ namespace Suppliers.Identity
                     RequirePkce = true,
                     RedirectUris =
                     {
-                        "http://.../signin-oidc"
+                        "http://localhost:3000/signin-oidc"
                     },
                     AllowedCorsOrigins =
                     {
-                        "http://..."
+                        "http://localhost:3000"
                     },
                     PostLogoutRedirectUris =
                     {
-                        "http://.../signout-oidc"
+                        "http://localhost:3000/signout-oidc"
                     },
                     AllowedScopes =
                     {
@@ -56,7 +56,8 @@ namespace Suppliers.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         "SuppliersWebAPI"
                     },
-                    AllowAccessTokensViaBrowser = true
+                    AllowAccessTokensViaBrowser = true,
+                    AlwaysIncludeUserClaimsInIdToken = true
                 }
             };
     }

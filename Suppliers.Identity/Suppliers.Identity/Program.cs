@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Suppliers.Identity;
 using Suppliers.Identity.Data;
 using Suppliers.Identity.Model;
+using Suppliers.Identity.Infrastracture;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(Configuration.IdentityResources)
     .AddInMemoryApiScopes(Configuration.ApiScopes)
     .AddInMemoryClients(Configuration.Clients)
+    .AddProfileService<ProfileService>()
     .AddDeveloperSigningCredential();
 
 builder.Services.ConfigureApplicationCookie(config =>
@@ -61,7 +63,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = serviceProvider.GetRequiredService<AuthDbContext>();
+        var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         DbInitializer.Initialize(context);
+        DataSeed.SeedDataAsync(context, userManager, roleManager).Wait();
     }
     catch (Exception exception)
     {
