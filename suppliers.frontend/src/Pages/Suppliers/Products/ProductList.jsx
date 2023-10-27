@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import '../App.css';
+import '../../../App.css';
 import { Button, Container } from 'react-bootstrap';
 import Product from './Product';
-import Header from '../Components/Header';
+import Header from '../../../Components/Header';
 const ProductList = () => {
 
     const [products, setProducts] = useState([]);
@@ -29,15 +29,15 @@ const ProductList = () => {
 
     return (
         <>
-            <Header role='Admin'/>
-            <Container style={{paddingTop: "40px"}}>
+            <Header role='Supplier'/>
+            <Container className='content-container'>
                 <div className='productsHeader'>
                     <h3>Список товаров</h3>
-                    <Button variant='warning'>Добавить</Button>
+                    <Button variant='warning' href='/products/add'>Добавить</Button>
                 </div>
                 <div>
                     {products.map(item => 
-                        <Product key={item.id} item={item}/>
+                        <Product key={item.id} item={item} products={products} setProducts={setProducts}/>
                     )}
                 </div>
             </Container>

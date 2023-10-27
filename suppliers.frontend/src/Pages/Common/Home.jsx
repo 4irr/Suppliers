@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import Header from "./Header";
-import { loadUser, signinRedirect } from "../auth/user-service";
+import Header from "../../Components/Header";
+import { loadUser, signinRedirect } from "../../auth/user-service";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -14,15 +14,23 @@ const Home = () => {
         if(value===null)
             return;
         else {
-            if(value.profile.role === 'Admin')
-                router('/admin');
+            switch(value.profile.role){
+                case 'Admin': {
+                    router('/admin');
+                    break;
+                }
+                case 'Supplier': {
+                    router('/supplier');
+                    break;
+                }
+            }
         }
     });
 
     return (
         <>
             <Header/>
-            <Container>
+            <Container className="content-container">
                 <h2>Домашняя страница</h2>
             </Container>
         </>

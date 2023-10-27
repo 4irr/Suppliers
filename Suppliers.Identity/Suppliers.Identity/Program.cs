@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using Suppliers.Identity;
 using Suppliers.Identity.Data;
 using Suppliers.Identity.Model;
@@ -9,6 +8,8 @@ using Suppliers.Identity.Infrastracture;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
@@ -41,16 +42,10 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.LogoutPath = "/Auth/Logout";
 });
 
-builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.ContentRootPath, "Styles")),
-    RequestPath = "/styles"
-});
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseIdentityServer();

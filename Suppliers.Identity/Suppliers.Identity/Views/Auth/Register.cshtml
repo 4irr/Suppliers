@@ -1,48 +1,53 @@
 ﻿@model RegisterViewModel
-<head>
-    <link href=@Url.Content("~/Styles/app.css") rel="stylesheet" type="text/css"/>
-</head>
-<form asp-controller="Auth" asp-action="Register" method="post">
-    <input type="hidden" asp-for="ReturnUrl" />
-    <div class="header">Регистрация</div>
-    <div class="block">
-        <label>Логин</label>
-        <input asp-for="Username" class="input" />
-        <span asp-validation-for="Username"></span>
+
+<h4 style="padding: 20px 0 10px 20px">Регистрация</h4>
+<hr />
+<div style="padding: 50px 0">
+    <div style="display:flex; justify-content:center; align-items: center">
+        <form asp-controller="Auth" asp-action="Register" method="post" style="min-width: 300px">
+            <input type="hidden" asp-for="ReturnUrl" />
+            <div class="form-group">
+                <label asp-for="Username" class="control-label">Логин</label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label">Пароль</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label">Подтвердите пароль</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">Имя</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName"class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Фамилия</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label">Возраст</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Вход</a>
+            </div>
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </form>
     </div>
-    <div class="block">
-        <label>Пароль</label>
-        <input asp-for="Password" class="input" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div class="block">
-        <label>Подтвердите пароль</label>
-        <input asp-for="ConfirmPassword" class="input" />
-        <span asp-validation-for="ConfirmPassword"></span>
-    </div>
-    <div class="block">
-        <label>Имя</label>
-        <input asp-for="FirstName" class="input" />
-        <span asp-validation-for="FirstName"></span>
-    </div>
-    <div class="block">
-        <label>Фамилия</label>
-        <input asp-for="LastName" class="input" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-    <div class="block">
-        <label>Возраст</label>
-        <input asp-for="Age" class="input" />
-        <span asp-validation-for="Age"></span>
-    </div>
-    <div class="block">
-        <label>Email</label>
-        <input asp-for="Email" class="input" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div class="block">
-        <button type="submit" class="button">Зарегистрироваться</button>
-    </div>
-    <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl"
-       class="switch-button">Вход</a>
-</form>
+</div>

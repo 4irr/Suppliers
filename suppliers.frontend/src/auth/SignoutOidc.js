@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signoutRedirectCallback } from './user-service';
 import Loader from "../Components/Loader/Loader";
 import { Container } from "react-bootstrap";
+import Header from "../Components/Header";
 
 const SignoutOidc = () => {
     const router = useNavigate();
@@ -14,9 +15,12 @@ const SignoutOidc = () => {
         signoutAsync();
     }, []);
     return (
-        <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
-            <Loader/>
-        </Container>
+        <>
+            <Header/>
+            <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
+                <Loader/>
+            </Container>
+        </>
     );
 };
 

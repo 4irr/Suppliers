@@ -17,6 +17,7 @@ namespace Suppliers.Application.Products.Queries.GetProductList
         public async Task<ProductListVm> Handle(GetProductListQuery request, CancellationToken cancellationToken)
         {
             var productsQuery = await _context.Products
+                .Where(product => product.UserId == request.UserId)
                 .ProjectTo<ProductLookupDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 

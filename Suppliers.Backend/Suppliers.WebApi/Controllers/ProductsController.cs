@@ -33,7 +33,10 @@ namespace Suppliers.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ProductListVm>> GetAll()
         {
-            var query = new GetProductListQuery();
+            var query = new GetProductListQuery
+            {
+                UserId = UserId
+            };
             var vm = await Mediator.Send(query);
             return Ok(vm);
         }

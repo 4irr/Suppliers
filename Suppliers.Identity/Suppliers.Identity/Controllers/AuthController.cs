@@ -70,6 +70,12 @@ namespace Suppliers.Identity.Controllers
                 return View(model);
             }
 
+            if(await _userManager.FindByNameAsync(model.Username) != null)
+            {
+                ModelState.AddModelError("", "Пользователь с таким логином уже зарегистрирован");
+                return View(model);
+            }
+
             var user = new AppUser
             {
                 UserName = model.Username,
@@ -80,6 +86,7 @@ namespace Suppliers.Identity.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+            await _userManager.AddToRoleAsync(user, "Supplier");
             if(result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
