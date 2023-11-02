@@ -9,7 +9,8 @@ namespace Suppliers.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("SuppliersWebAPI", "Web API")
+                new ApiScope("SuppliersWebAPI", "Web API"),
+                new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
 
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -25,6 +26,10 @@ namespace Suppliers.Identity
                 new ApiResource("SuppliersWebAPI", "Web API", new [] { JwtClaimTypes.Name, JwtClaimTypes.Role })
                 {
                     Scopes = { "SuppliersWebAPI" }
+                },
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+                {
+                    Scopes = { IdentityServerConstants.LocalApi.ScopeName }
                 }
             };
 
@@ -58,6 +63,16 @@ namespace Suppliers.Identity
                     },
                     AllowAccessTokensViaBrowser = true,
                     AlwaysIncludeUserClaimsInIdToken = true
+                },
+                new Client
+                {
+                    ClientId = "WebApi",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { IdentityServerConstants.LocalApi.ScopeName }
                 }
             };
     }

@@ -25,20 +25,31 @@ namespace Suppliers.Identity.Data
 
             if (!userManager.Users.Any())
             {
-                var user = new AppUser
+                var admin = new AppUser
                 {
                     UserName = "admin",
                     FirstName = "admin",
-                    LastName = "admin",
-                    Age = 20,
-                    Email = "chirva2015@list.ru"
+                    LastName = "admin"
+                };
+                var client = new AppUser
+                {
+                    UserName = "client",
+                    FirstName = "client",
+                    LastName = "client"
                 };
 
-                var result = await userManager.CreateAsync(user, "admin");
+                var result = await userManager.CreateAsync(admin, "admin");
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+
+                result = await userManager.CreateAsync(client, "client");
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(client, "Client");
                 }
             }
         }

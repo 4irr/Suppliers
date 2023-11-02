@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert, Button } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
 
 const Product = ({item, products, setProducts}) => {
 
@@ -27,7 +26,7 @@ const Product = ({item, products, setProducts}) => {
             <p><b>Цена за кг. товара:</b> {item.price} р.</p>
             <p><b>Количество:</b> {item.quantity} кг.</p>
             <p><b>Товар годен до:</b> {item.expirationDate}</p>
-            <Button variant="success" style={{marginRight: '20px'}} href={`/products/edit/${item.id}`}>Изменить</Button>
+            <Button variant="success" style={{marginRight: '20px'}} href={`/supplier/products/edit/${item.id}`}>Изменить</Button>
             <Button variant="danger" onClick={handleRemove}>Удалить</Button>
         </Alert>
     );

@@ -1,6 +1,6 @@
 import React from "react";
 import { signinRedirect, signoutRedirect } from "../auth/user-service";
-import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 
 const Header = ({role}) => {
     return (
@@ -16,14 +16,22 @@ const Header = ({role}) => {
                     }
                     { role === 'Supplier' &&
                         <Nav className="me-auto">
-                            <Nav.Link href="/products">Товары</Nav.Link>
-                            <Nav.Link href="/orders">Заказы</Nav.Link>
-                            <Nav.Link href="/analytics">Аналитика</Nav.Link>
+                            <Nav.Link href="/supplier/products">Товары</Nav.Link>
+                            <Nav.Link href="/supplier/orders">Заказы</Nav.Link>
+                            <Nav.Link href="/supplier/analytics">Аналитика</Nav.Link>
                         </Nav>
                     }
                     { role === 'Admin' &&
                         <Nav className="me-auto">
-                            <Nav.Link href="/administration">Администрирование</Nav.Link>
+                            <Nav.Link href="/admin/administration">Администрирование</Nav.Link>
+                        </Nav>
+                    }
+                    { role === 'Client' &&
+                        <Nav className="me-auto">
+                            <Nav.Link href="/client/suppliers">Поставщики</Nav.Link>    
+                            <Nav.Link href="/client/orders">Заказы</Nav.Link>
+                            <Nav.Link href="/client/tenders">Тендеры</Nav.Link>
+                            <Nav.Link href="/client/analytics">Аналитика</Nav.Link>
                         </Nav>
                     }
                     <Nav>
@@ -32,7 +40,7 @@ const Header = ({role}) => {
                         <Button onClick={() => signinRedirect() }>Вход</Button>
                         :
                         <>
-                            <h3 style={{color: "white", margin: '0px 20px 0 0'}}>{role}</h3>
+                            <h3 style={{color: "white", margin: '0 20px 0 0'}}>{role}</h3>
                             <Button onClick={() => signoutRedirect({ 'id_token_hint': localStorage.getItem('id-token') })}>Выход</Button>
                         </>
                         }

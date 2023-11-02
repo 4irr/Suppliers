@@ -35,6 +35,8 @@ builder.Services.AddIdentityServer()
     .AddProfileService<ProfileService>()
     .AddDeveloperSigningCredential();
 
+builder.Services.AddLocalApiAuthentication();
+
 builder.Services.ConfigureApplicationCookie(config =>
 {
     config.Cookie.Name = "Suppliers.Identity.Cookie";
@@ -44,11 +46,15 @@ builder.Services.ConfigureApplicationCookie(config =>
 
 var app = builder.Build();
 
+app.UseIdentityServer();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseIdentityServer();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
 

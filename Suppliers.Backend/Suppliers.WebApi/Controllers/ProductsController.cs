@@ -150,5 +150,29 @@ namespace Suppliers.WebApi.Controllers
             await Mediator.Send(command);
             return NoContent();
         }
+
+        /// <summary>
+        /// Gets the list of products of the supplier
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// GET /products/supplier/85AFAF1E-B241-4C1E-8A35-C2B8081F9512
+        /// </remarks>
+        /// <returns>Returns ProductListVm</returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpGet("supplier/{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> GetSuppliersProducts(Guid id)
+        {
+            var query = new GetProductListQuery
+            {
+                UserId = id
+            };
+            var vm = await Mediator.Send(query);
+            return Ok(vm);
+        }
     }
 }

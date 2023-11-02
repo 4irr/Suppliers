@@ -3,9 +3,13 @@ import '../../../App.css';
 import { Button, Container } from 'react-bootstrap';
 import Product from './Product';
 import Header from '../../../Components/Header';
-const ProductList = () => {
+import { useParams } from 'react-router-dom';
+
+const SupplierProductList = () => {
 
     const [products, setProducts] = useState([]);
+
+    const params = useParams();
 
     async function getProducts() {
         const options = {
@@ -14,7 +18,7 @@ const ProductList = () => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/Products`, options);
+        const result = await fetch(`https://localhost:7214/api/Products/supplier/${params.id}`, options);
         if(result.ok){
             const info = await result.json();
             setProducts(info.products);
@@ -29,12 +33,9 @@ const ProductList = () => {
     
     return (
         <>
-            <Header role='Supplier'/>
+            <Header role='Client'/>
             <Container className='content-container'>
-                <div className='productsHeader'>
-                    <h3>Список товаров</h3>
-                    <Button variant='warning' href='/supplier/products/add'>Добавить</Button>
-                </div>
+                <h3>Список товаров</h3>
                 <div>
                     {products.map(item => 
                         <Product key={item.id} item={item} products={products} setProducts={setProducts}/>
@@ -45,4 +46,4 @@ const ProductList = () => {
     );
 }
 
-export default ProductList;
+export default SupplierProductList;
