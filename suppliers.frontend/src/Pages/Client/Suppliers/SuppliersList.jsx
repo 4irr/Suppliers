@@ -34,6 +34,7 @@ const SuppliersList = () => {
             <Header role='Client'/>
             <Container className='content-container'>
                 <h3>Список поставщиков</h3>
+                {suppliers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список поставщиков пуст</h4>}
                 <div>
                     {suppliers.map(item => 
                         <Supplier key={item.id} item={item}>{item.firstName}</Supplier>

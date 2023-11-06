@@ -21,7 +21,7 @@ const AddProduct = () => {
         }
         var result = await fetch(`https://localhost:7214/api/Products`, options);
         if(result.ok) {
-            router('/');
+            router('/supplier/products');
         }
         else {
             console.log(result.status);

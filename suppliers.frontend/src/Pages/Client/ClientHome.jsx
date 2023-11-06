@@ -19,9 +19,9 @@ const ClientHome = () => {
                 </Row>
             </Container>
             <Container style={{padding: '0 0 50px 0'}}>
-                <Row>
-                    <h2 style={{textAlign: 'center', marginBottom: '20px'}}>Функционал</h2>
-                    <Col className="my-3">
+                <h2 style={{textAlign: 'center', marginBottom: '20px'}}>Функционал</h2>
+                <Row className="justify-content-md-center">
+                    <Col className="my-3" md='5'>
                         <Card style={{width: '18rem', margin: '0 auto'}}>
                             <Card.Img style={{height: '170px'}} variant="top" src="images/client_home_suppliers.jpg"/>
                             <Card.Body>
@@ -31,7 +31,7 @@ const ClientHome = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col className="my-3">
+                    <Col className="my-3" md='5'>
                         <Card style={{width: '18rem', margin: '0 auto'}}>
                         <Card.Img style={{height: '170px'}} variant="top" src="images/client_home_orders.jpg"/>
                             <Card.Body>
@@ -41,7 +41,9 @@ const ClientHome = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col className="my-3">
+                </Row>
+                <Row className="justify-content-md-center my-4">
+                    <Col className="my-3" md='5'>
                         <Card style={{width: '18rem', margin: '0 auto'}}>
                             <Card.Img style={{height: '170px'}} variant="top" src="images/tender.jpg"/>
                             <Card.Body>
@@ -51,7 +53,7 @@ const ClientHome = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col className="my-3">
+                    <Col className="my-3" md='5'>
                         <Card style={{width: '18rem', margin: '0 auto'}}>
                             <Card.Img style={{height: '170px'}} variant="top" src="images/analytics.jpg"/>
                             <Card.Body>

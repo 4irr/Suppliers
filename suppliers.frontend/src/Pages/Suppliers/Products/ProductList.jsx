@@ -35,6 +35,7 @@ const ProductList = () => {
                     <h3>Список товаров</h3>
                     <Button variant='warning' href='/supplier/products/add'>Добавить</Button>
                 </div>
+                {products.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список ваших товаров пуст</h4>}
                 <div>
                     {products.map(item => 
                         <Product key={item.id} item={item} products={products} setProducts={setProducts}/>

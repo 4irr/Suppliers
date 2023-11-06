@@ -30,6 +30,10 @@ namespace Suppliers.Identity.Model
         [Range(1, 120, ErrorMessage = "Недопустимый возраст")]
         public int Age { get; set; }
 
+        [Required(ErrorMessage = "Обязательное поле")]
+        [MinLength(5, ErrorMessage = "Поле должно содержать минимум 5 символов")]
+        public string Organization { get; set; } = null!;
+
         public string ReturnUrl { get; set; } = null!;
     }
 }

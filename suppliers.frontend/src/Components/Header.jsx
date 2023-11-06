@@ -23,7 +23,10 @@ const Header = ({role}) => {
                     }
                     { role === 'Admin' &&
                         <Nav className="me-auto">
-                            <Nav.Link href="/admin/administration">Администрирование</Nav.Link>
+                            <Nav.Link href="/admin/user-data">Данные</Nav.Link>
+                            <Nav.Link href="/admin/user-activity">Активность</Nav.Link>
+                            <Nav.Link href="/admin/licenses">Лицензии</Nav.Link>
+                            <Nav.Link href="/admin/orders">Заказы</Nav.Link>
                         </Nav>
                     }
                     { role === 'Client' &&

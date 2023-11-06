@@ -6,7 +6,7 @@ using Suppliers.Application.Products.Commands.DeleteProduct;
 using Suppliers.Application.Products.Commands.UpdateProduct;
 using Suppliers.Application.Products.Queries.GetProductDetails;
 using Suppliers.Application.Products.Queries.GetProductList;
-using Suppliers.WebApi.Models;
+using Suppliers.WebApi.Models.Products;
 
 namespace Suppliers.WebApi.Controllers
 {

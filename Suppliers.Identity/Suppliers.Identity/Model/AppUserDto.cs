@@ -8,5 +8,6 @@
         public int Age { get; set; }
         public string Email { get; set; } = null!;
         public string? Role { get; set; } = null!;
+        public string? Organization { get; set; }
     }
 }

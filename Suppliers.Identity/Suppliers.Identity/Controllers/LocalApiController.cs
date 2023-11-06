@@ -22,14 +22,15 @@ namespace Suppliers.Identity.Controllers
             var result = new List<AppUserDto>();
             foreach(var user in users)
             {
-                result.Add(new AppUserDto
+                result.Add(new AppUserDto   
                 {
                     Id = user.Id,
                     FirstName= user.FirstName,
                     LastName= user.LastName,
                     Age= user.Age,
                     Email = user.Email!,
-                    Role = (await _userManager.GetRolesAsync(user)).First()
+                    Role = (await _userManager.GetRolesAsync(user)).First(),
+                    Organization = user.Organization,
                 });
             }
             return Ok(result);

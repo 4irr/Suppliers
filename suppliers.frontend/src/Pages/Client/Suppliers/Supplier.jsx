@@ -7,6 +7,7 @@ const Product = ({item}) => {
         <Alert variant="success" className="my-4">
             <p><b>Имя:</b> {item.firstName}</p>
             <p><b>Фамилия:</b> {item.lastName}</p>
+            <p><b>Организация:</b> {item.organization}</p>
             <p><b>Email:</b> {item.email}</p>
             <Button href={`/client/suppliers/${item.id}/products`}>Предлагаемые товары</Button>
         </Alert>

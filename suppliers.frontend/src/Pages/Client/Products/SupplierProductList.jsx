@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../../../App.css';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Product from './Product';
 import Header from '../../../Components/Header';
 import { useParams } from 'react-router-dom';
@@ -36,9 +36,10 @@ const SupplierProductList = () => {
             <Header role='Client'/>
             <Container className='content-container'>
                 <h3>Список товаров</h3>
+                {products.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список товаров поставщика пуст</h4>}
                 <div>
                     {products.map(item => 
-                        <Product key={item.id} item={item} products={products} setProducts={setProducts}/>
+                        <Product key={item.id} item={item} supplierId={params.id}/>
                     )}
                 </div>
             </Container>

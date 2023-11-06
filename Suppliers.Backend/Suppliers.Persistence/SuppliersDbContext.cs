@@ -8,7 +8,9 @@ namespace Suppliers.Persistence
     public class SuppliersDbContext : DbContext, ISuppliersDbContext
     {
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<Batch> Batches { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
         public SuppliersDbContext(DbContextOptions<SuppliersDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

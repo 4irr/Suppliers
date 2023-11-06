@@ -82,7 +82,8 @@ namespace Suppliers.Identity.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Age = model.Age,
-                Email = model.Email
+                Email = model.Email,
+                Organization = model.Organization
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

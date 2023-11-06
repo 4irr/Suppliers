@@ -2,7 +2,7 @@
 using Suppliers.Application.Common.Mappings;
 using Suppliers.Application.Products.Commands.UpdateProduct;
 
-namespace Suppliers.WebApi.Models
+namespace Suppliers.WebApi.Models.Products
 {
     public class UpdateProductDto : IMapWith<UpdateProductCommand>
     {
