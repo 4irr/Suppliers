@@ -9,6 +9,8 @@ namespace Suppliers.Application.Interfaces
         DbSet<Batch> Batches { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Contract> Contracts { get; set; }
+        DbSet<Tender> Tenders { get; set; }
+        DbSet<TenderUser> TendersUsers { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -84,7 +84,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="201">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Supplier")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateProductDto createProductDto)
@@ -114,7 +114,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="204">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "Supplier")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Update([FromBody] UpdateProductDto updateProductDto)
@@ -137,7 +137,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="204">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Supplier")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Delete(Guid id)
@@ -162,7 +162,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="200">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpGet("supplier/{id}")]
-        [Authorize]
+        [Authorize(Roles = "Client")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> GetSuppliersProducts(Guid id)

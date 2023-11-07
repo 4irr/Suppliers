@@ -37,7 +37,7 @@ const SupplierHome = () => {
                             <Card.Body>
                                 <Card.Title>Заказы</Card.Title>
                                 <Card.Text>Просматривайте заказы партий товаров продуктов питания в онлайн режиме и заключайте договора с заказчиком</Card.Text>
-                                <Button href='/client/orders'>Перейти</Button>
+                                <Button href='/supplier/orders'>Перейти</Button>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -47,7 +47,7 @@ const SupplierHome = () => {
                             <Card.Body>
                                 <Card.Title>Аналитика</Card.Title>
                                 <Card.Text>Ведите аналитику вашей торговли с заказчиком, формируйте необходимые разнообразные виды отчётов</Card.Text>
-                                <Button href='/client/analytics'>Перейти</Button>
+                                <Button href='/supplier/analytics'>Перейти</Button>
                             </Card.Body>
                         </Card>
                     </Col>

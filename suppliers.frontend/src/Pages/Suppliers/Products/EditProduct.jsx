@@ -24,7 +24,7 @@ const EditProduct = () => {
             setProduct(info);
             return info;
         }
-        router('/products');
+        router('/supplier/products');
         return {};
     }
 

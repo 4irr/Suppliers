@@ -74,7 +74,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="201">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Client")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateContractDto createContractDto)
@@ -96,7 +96,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="204">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpDelete("{id}/remove")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Delete(Guid id)
@@ -121,7 +121,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="204">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpPut("{id}/confirm")]
-        [Authorize]
+        [Authorize(Roles = "Supplier")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> ConfirmContract(Guid id)

@@ -20,7 +20,7 @@ namespace Suppliers.WebApi.Controllers
         /// <response code="200">Success</response>
         /// <response code="401">If user is unauthorized</response>
         [HttpGet("suppliers")]
-        [Authorize]
+        [Authorize(Roles = "Client, Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> GetSuppliersList()

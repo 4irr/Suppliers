@@ -19,6 +19,7 @@ const Header = ({role}) => {
                             <Nav.Link href="/supplier/products">Товары</Nav.Link>
                             <Nav.Link href="/supplier/orders">Заказы</Nav.Link>
                             <Nav.Link href="/supplier/analytics">Аналитика</Nav.Link>
+                            <Nav.Link href="/supplier/tenders">Тендеры</Nav.Link>
                         </Nav>
                     }
                     { role === 'Admin' &&
@@ -27,6 +28,7 @@ const Header = ({role}) => {
                             <Nav.Link href="/admin/user-activity">Активность</Nav.Link>
                             <Nav.Link href="/admin/licenses">Лицензии</Nav.Link>
                             <Nav.Link href="/admin/orders">Заказы</Nav.Link>
+                            <Nav.Link href="/admin/tenders">Тендеры</Nav.Link>
                         </Nav>
                     }
                     { role === 'Client' &&

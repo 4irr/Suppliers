@@ -3,11 +3,14 @@ import '../../../App.css';
 import { Button, Container } from 'react-bootstrap';
 import Product from './Product';
 import Header from '../../../Components/Header';
+import Loader from '../../../Components/Loader/Loader';
 const ProductList = () => {
 
     const [products, setProducts] = useState([]);
+    const [isContentLoading, setIsContentLoading] = useState(true);
 
     async function getProducts() {
+        setIsContentLoading(true);
         const options = {
             method: 'GET',
             headers: {
@@ -18,9 +21,8 @@ const ProductList = () => {
         if(result.ok){
             const info = await result.json();
             setProducts(info.products);
-            return info;
         }
-        return [];
+        setIsContentLoading(false);
     }
 
     useEffect(() => {
@@ -30,8 +32,14 @@ const ProductList = () => {
     return (
         <>
             <Header role='Supplier'/>
+            {isContentLoading
+            ?
+            <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
+                <Loader/>
+            </Container>
+            :
             <Container className='content-container'>
-                <div className='productsHeader'>
+                <div className='items-header'>
                     <h3>Список товаров</h3>
                     <Button variant='warning' href='/supplier/products/add'>Добавить</Button>
                 </div>
@@ -42,6 +50,7 @@ const ProductList = () => {
                     )}
                 </div>
             </Container>
+            }
         </>
     );
 }

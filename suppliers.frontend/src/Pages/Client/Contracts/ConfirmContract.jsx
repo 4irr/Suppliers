@@ -77,7 +77,7 @@ const ConfirmContract = () => {
             <Container className="content-container" style={{height: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <h2>Подтверджение заключения договора</h2>
                 <div style={{marginTop: '50px'}}>
-                    <Button style={{marginRight: '30px'}} onClick={(e) => handleSubmit(e)}>Подвердить</Button>
+                    <Button style={{marginRight: '30px'}} onClick={(e) => handleSubmit(e)}>Подтвердить</Button>
                     <Button variant="danger" onClick={() => router('/client/suppliers')}>Отмена</Button>
                 </div>
             </Container>
