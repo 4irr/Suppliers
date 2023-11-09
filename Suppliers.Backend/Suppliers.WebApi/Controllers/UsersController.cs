@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
+using Suppliers.Application.Suppliers.Commands.ConfirmLicense;
+using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSupplierDetails;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
+using System.IO;
 
 namespace Suppliers.WebApi.Controllers
 {
@@ -9,6 +14,10 @@ namespace Suppliers.WebApi.Controllers
     [Route("/api/[controller]")]
     public class UsersController : BaseController
     {
+        private readonly IWebHostEnvironment _appEnvironment;
+
+        public UsersController(IWebHostEnvironment appEnvironment) => _appEnvironment = appEnvironment;
+
         /// <summary>
         /// Gets the list of suppliers
         /// </summary>
@@ -55,5 +64,57 @@ namespace Suppliers.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Saves suppliers license
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// GET /users/load-license
+        /// </remarks>
+        /// <param name="formFile">Suppliers license</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpPost("save-license")]
+        [Authorize(Roles = "Supplier")]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> SaveLicense([FromForm] IFormFile formFile)
+        {
+            var command = new SaveLicenseCommand
+            {
+                UserId = UserId,
+                FormFile = formFile,
+                FullPath = _appEnvironment.WebRootPath + "/Licenses/" + formFile.FileName
+            };
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpGet("{id}/load-license")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> LoadLicense(Guid id)
+        {
+            var command = new LoadLicenseCommand
+            {
+                UserId = id
+            };
+            var dto = await Mediator.Send(command);
+            return File(dto.FileStream!, dto.ContentType!, dto.FileName!);
+        }
+
+        [HttpPost("{id}/confirm-license")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> ConfirmLicense(Guid id)
+        {
+            var command = new ConfirmLicenseCommand
+            {
+                UserId = id
+            };
+            await Mediator.Send(command);
+            return NoContent();
+        }
     }
 }

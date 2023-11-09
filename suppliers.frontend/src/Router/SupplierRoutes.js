@@ -6,6 +6,7 @@ import EditProduct from "../Pages/Suppliers/Products/EditProduct";
 import SupplierContractsList from "../Pages/Suppliers/Contracts/SupplierContractList";
 import TendersList from "../Pages/Common/Tenders/TendersList";
 import RegisterInRender from "../Pages/Suppliers/Tenders/RegisterInTender";
+import SaveLicense from "../Pages/Suppliers/License/SaveLicense";
 
 export const supplierRoutes = [
     { path: '/supplier', element: <RequireAuth role="Supplier"><SupplierHome/></RequireAuth> },
@@ -14,5 +15,6 @@ export const supplierRoutes = [
     { path: '/supplier/products/edit/:id', element: <RequireAuth role="Supplier"><EditProduct/></RequireAuth> },
     { path: '/supplier/orders', element: <RequireAuth role='Supplier'><SupplierContractsList/></RequireAuth> },
     { path: '/supplier/tenders', element: <RequireAuth role='Supplier'><TendersList role='Supplier'/></RequireAuth> },
-    { path: '/supplier/tenders/:id/register', element: <RequireAuth role='Supplier'><RegisterInRender/></RequireAuth> }
+    { path: '/supplier/tenders/:id/register', element: <RequireAuth role='Supplier'><RegisterInRender/></RequireAuth> },
+    { path: '/supplier/save-license', element: <RequireAuth role='Supplier'><SaveLicense/></RequireAuth> }
 ];

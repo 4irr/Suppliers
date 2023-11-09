@@ -31,9 +31,54 @@ namespace Suppliers.Identity.Controllers
                     Email = user.Email!,
                     Role = (await _userManager.GetRolesAsync(user)).First(),
                     Organization = user.Organization,
+                    IsLicenseLoaded = user.IsLicenseLoaded,
+                    IsLicensed = user.IsLicensed,
+                    LicensePath = user.LicensePath,
                 });
             }
             return Ok(result);
+        }
+
+        [HttpPost("users/save-license")]
+        public async Task<ActionResult> SaveUserLicense([FromBody] LicenseDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(dto.UserId!);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.IsLicenseLoaded = true;
+            user.LicensePath = dto.FullPath;
+            await _userManager.UpdateAsync(user);
+
+            return NoContent();
+        }
+
+        [HttpGet("users/{id}/load-license")]
+        public async Task<ActionResult> LoadUserLicense(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user.LicensePath);
+        }
+
+        [HttpPost("users/{id}/confirm-license")]
+        public async Task<ActionResult> ConfirmUserLicense(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsLicensed = true;
+            await _userManager.UpdateAsync(user);
+
+            return NoContent();
         }
     }
 }

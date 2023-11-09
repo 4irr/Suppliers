@@ -6,6 +6,7 @@ using Suppliers.Application.Interfaces;
 using Suppliers.Persistence;
 using Suppliers.WebApi;
 using Suppliers.WebApi.Middleware;
+using Suppliers.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
@@ -17,9 +18,13 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile(new AssemblyMappingProfile(typeof(ISuppliersDbContext).Assembly));
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddUsersHttpClientServices();
 
 builder.Services.AddCors(options =>
 {
@@ -38,7 +43,7 @@ builder.Services.AddAuthentication(config =>
 })
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "https://localhost:7073/";
+        options.Authority = "https://localhost:7073";
         options.Audience = "SuppliersWebAPI";
         options.RequireHttpsMetadata = false;
     });
@@ -47,6 +52,9 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwa
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseSession();
+app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI(config =>

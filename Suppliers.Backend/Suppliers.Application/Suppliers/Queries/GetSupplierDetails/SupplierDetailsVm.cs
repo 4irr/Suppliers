@@ -12,6 +12,9 @@ namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
         public int Age { get; set; }
         public string Email { get; set; } = null!;
         public string? Organization { get; set; }
+        public bool IsLicenseLoaded { get; set; }
+        public bool IsLicensed { get; set; }
+        public string? LicensePath { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -27,7 +30,13 @@ namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
                 .ForMember(vm => vm.Email,
                     opt => opt.MapFrom(dto => dto.Email))
                 .ForMember(vm => vm.Organization,
-                    opt => opt.MapFrom(dto => dto.Organization));
+                    opt => opt.MapFrom(dto => dto.Organization))
+                .ForMember(vm => vm.IsLicenseLoaded,
+                    opt => opt.MapFrom(dto => dto.IsLicenseLoaded))
+                .ForMember(vm => vm.IsLicensed,
+                    opt => opt.MapFrom(dto => dto.IsLicensed))
+                .ForMember(vm => vm.LicensePath,
+                    opt => opt.MapFrom(dto => dto.LicensePath));
         }
     }
 }

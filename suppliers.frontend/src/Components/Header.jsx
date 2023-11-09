@@ -1,6 +1,6 @@
 import React from "react";
 import { signinRedirect, signoutRedirect } from "../auth/user-service";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 const Header = ({role}) => {
     return (
@@ -46,6 +46,13 @@ const Header = ({role}) => {
                         :
                         <>
                             <h3 style={{color: "white", margin: '0 20px 0 0'}}>{role}</h3>
+                            { role === 'Supplier' && 
+                                <NavDropdown title="Меню" id="basic-nav-dropdown" menuVariant="light" style={{marginRight: '20px'}}>
+                                    <NavDropdown.ItemText>Поставщик</NavDropdown.ItemText>
+                                    <NavDropdown.Divider/>
+                                    <NavDropdown.Item href="/supplier/save-license">Загрузить лицензию</NavDropdown.Item>
+                                </NavDropdown>
+                            }
                             <Button onClick={() => signoutRedirect({ 'id_token_hint': localStorage.getItem('id-token') })}>Выход</Button>
                         </>
                         }

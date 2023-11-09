@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Suppliers.Persistence\Suppliers.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Licenses\" />
+  </ItemGroup>
+
 </Project>
