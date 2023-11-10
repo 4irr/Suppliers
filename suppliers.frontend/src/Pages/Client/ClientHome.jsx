@@ -8,6 +8,7 @@ const ClientHome = () => {
             <Header role='Client'/>
             <Container className='content-container'>
                 <h2 style={{textAlign: 'center', marginBottom: '30px'}}>Добро пожаловать</h2>
+                <h1 style={{fontSize: 30px}}>Олег топ нах</h1>
                 <Row style={{borderBottom: '2px solid black', paddingBottom: '60px'}}>
                     <Col md={7}>
                         <img style={{width: '100%'}} src="images/customer.jpg" alt='customer.jpg'/>
