@@ -11,6 +11,11 @@ import AddTender from "../Pages/Client/Tenders/AddTender";
 import EditTender from "../Pages/Client/Tenders/EditTender";
 import SuppliersTenderList from "../Pages/Client/Tenders/SuppliersTenderList";
 import ConfirmTenderClosing from "../Pages/Client/Tenders/ConfirmTenderClosing";
+import Analytics from "../Pages/Client/Reports/Analytics";
+import CreateSingleReport from "../Pages/Common/Reports/CreateSingleReport";
+import ShowSingleReport from "../Pages/Common/Reports/ShowSingleReport";
+import CreateTotalReport from "../Pages/Client/Reports/CreateTotalReport";
+import ShowTotalReport from "../Pages/Client/Reports/ShowTotalReport";
 
 export const clientRoutes = [
     { path: '/client', element: <RequireAuth role="Client"><ClientHome/></RequireAuth> },
@@ -24,5 +29,10 @@ export const clientRoutes = [
     { path: '/client/tenders/add', element: <RequireAuth role="Client"><AddTender/></RequireAuth> },
     { path: '/client/tenders/edit/:id', element: <RequireAuth role="Client"><EditTender/></RequireAuth> },
     { path: '/client/tenders/:id/suppliers-list', element: <RequireAuth role="Client"><SuppliersTenderList/></RequireAuth> },
-    { path: '/client/tenders/:id/executor/:executorId', element: <RequireAuth role="Client"><ConfirmTenderClosing/></RequireAuth> }
+    { path: '/client/tenders/:id/executor/:executorId', element: <RequireAuth role="Client"><ConfirmTenderClosing/></RequireAuth> },
+    { path: '/client/analytics', element: <RequireAuth role="Client"><Analytics/></RequireAuth> },
+    { path: '/client/reports/single', element: <RequireAuth role="Client"><CreateSingleReport role='Client'/></RequireAuth> },
+    { path: '/client/reports/single/show', element: <RequireAuth role="Client"><ShowSingleReport role='Client'/></RequireAuth> },
+    { path: '/client/reports/total', element: <RequireAuth role="Client"><CreateTotalReport/></RequireAuth> },
+    { path: '/client/reports/total/show', element: <RequireAuth role="Client"><ShowTotalReport/></RequireAuth> },
 ];

@@ -26,3 +26,23 @@
 .product {
   margin: 20px 0;
 }
+
+.contract-row {
+  border-top: 1px solid black;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.contract-subrow {
+  margin-left: 10px;
+  border-top: 1px solid black;
+}
+
+.contract-subrow p {
+  padding-top: 10px;
+  margin: 0;
+}
+
+.contract-subrow p:last-child {
+  padding: 10px 0;
+}
