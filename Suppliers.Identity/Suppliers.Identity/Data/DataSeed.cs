@@ -6,7 +6,7 @@ namespace Suppliers.Identity.Data
     public class DataSeed
     {
         public static async Task SeedDataAsync(AuthDbContext context, UserManager<AppUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             if (!roleManager.Roles.Any())
             {
@@ -29,13 +29,17 @@ namespace Suppliers.Identity.Data
                 {
                     UserName = "admin",
                     FirstName = "admin",
-                    LastName = "admin"
+                    LastName = "admin",
+                    Email = configuration.GetValue<string>("AdminEmail"),
+                    EmailConfirmed = true
                 };
                 var client = new AppUser
                 {
                     UserName = "client",
                     FirstName = "client",
-                    LastName = "client"
+                    LastName = "client",
+                    Email = configuration.GetValue<string>("ClientEmail"),
+                    EmailConfirmed = true
                 };
 
                 var result = await userManager.CreateAsync(admin, "admin");

@@ -1,20 +1,21 @@
-﻿using Suppliers.Application.Interfaces;
+﻿using Microsoft.Extensions.Configuration;
+using Suppliers.Application.Interfaces;
 using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
-using System.Text;
+using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace Suppliers.WebApi.Services
+namespace Suppliers.Application.Common.Services
 {
     public class UsersHttpClient : IUsersHttpClient
     {
         private readonly HttpClient apiClient;
         private readonly string? apiUrl;
 
-        public UsersHttpClient(HttpClient httpClient, IConfiguration configuration) 
+        public UsersHttpClient(HttpClient httpClient, IConfiguration configuration)
         {
             apiClient = httpClient;
-            apiUrl = configuration.GetValue<string>("IdentityUrl");
+            apiUrl = configuration.GetSection("IdentityUrl").Value;
         }
 
         public async Task<List<AppUserDto>> GetAllUsersAsync()

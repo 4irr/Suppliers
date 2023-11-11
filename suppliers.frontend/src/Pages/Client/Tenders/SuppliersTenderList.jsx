@@ -18,6 +18,7 @@ const SuppliersTenderList = () => {
             <Header role='Client'/>
             <Container className='content-container'>
                 <h3>Список участников тендера</h3>
+                {tenderUsers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список участников пуст</h4>}
                 {tenderUsers.map(item =>
                     <TenderSupplier key={item.userId} userId={item.userId} userDescription={item.userDescription} tender={location.state.tender}/>
                 )}

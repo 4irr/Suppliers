@@ -34,6 +34,7 @@ namespace Suppliers.Identity.Controllers
                     IsLicenseLoaded = user.IsLicenseLoaded,
                     IsLicensed = user.IsLicensed,
                     LicensePath = user.LicensePath,
+                    EmailConfirmed = user.EmailConfirmed
                 });
             }
             return Ok(result);

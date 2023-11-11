@@ -9,7 +9,7 @@ namespace Suppliers.Identity.Services
         {
             using var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("suppliers.com", "chirva2015@list.ru"));
+            emailMessage.From.Add(new MailboxAddress("suppliers.com", "suppliers.com@mail.ru"));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -20,7 +20,7 @@ namespace Suppliers.Identity.Services
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.mail.ru", 465, true);
-                await client.AuthenticateAsync("chirva2015@list.ru", "anxz3F6SKQx8e6aHEjrv");
+                await client.AuthenticateAsync("suppliers.com@mail.ru", "WriYALRjhcaL2cyJ29Bt");
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);

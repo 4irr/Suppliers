@@ -69,7 +69,7 @@ using (var scope = app.Services.CreateScope())
         var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         DbInitializer.Initialize(context);
-        DataSeed.SeedDataAsync(context, userManager, roleManager).Wait();
+        DataSeed.SeedDataAsync(context, userManager, roleManager, app.Configuration).Wait();
     }
     catch (Exception exception)
     {

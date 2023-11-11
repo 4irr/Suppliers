@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import Header from "../../../Components/Header";
 import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../../../Components/Loader/Loader";
 
 const EditProduct = () => {
 
@@ -10,8 +11,10 @@ const EditProduct = () => {
     const params = useParams();
 
     const [product, setProduct] = useState({});
+    const [isContentLoading, setIsContentLoading] = useState(true);
 
     async function getProduct() {
+        setIsContentLoading(true);
         const options = {
             method: 'GET',
             headers: {
@@ -22,13 +25,15 @@ const EditProduct = () => {
         if(result.ok){
             const info = await result.json();
             setProduct(info);
-            return info;
+            setIsContentLoading(false);
         }
-        router('/supplier/products');
-        return {};
+        else {
+            router('/supplier/products');
+        }
     }
 
     async function editProduct(product) {
+        setIsContentLoading(true);
         const options = {
             method: 'PUT',
             headers: {
@@ -39,11 +44,12 @@ const EditProduct = () => {
         }
         var result = await fetch(`https://localhost:7214/api/Products`, options);
         if(result.ok) {
-            router('/');
+            router('/supplier/products');
         }
         else {
             console.log(result.status);
         }
+        setIsContentLoading(false);
     }
 
     useEffect(() => {
@@ -65,6 +71,12 @@ const EditProduct = () => {
     return (
         <>
             <Header role={'Supplier'}/>
+            {isContentLoading
+            ?
+            <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
+                <Loader/>
+            </Container>
+            :
             <Container className="content-container">
             <h3>Добавление товара</h3>
                 <Form className="py-3" onSubmit={handleSubmit}>
@@ -93,6 +105,7 @@ const EditProduct = () => {
                     </Button>
                 </Form>
             </Container>
+            }
         </>
     );
 };

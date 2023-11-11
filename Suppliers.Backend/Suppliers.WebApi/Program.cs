@@ -6,7 +6,6 @@ using Suppliers.Application.Interfaces;
 using Suppliers.Persistence;
 using Suppliers.WebApi;
 using Suppliers.WebApi.Middleware;
-using Suppliers.WebApi.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
@@ -24,7 +23,6 @@ builder.Services.AddSession();
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddControllers();
-builder.Services.AddUsersHttpClientServices();
 
 builder.Services.AddCors(options =>
 {
