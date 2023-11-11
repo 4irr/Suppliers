@@ -4,12 +4,14 @@ using Suppliers.Identity;
 using Suppliers.Identity.Data;
 using Suppliers.Identity.Model;
 using Suppliers.Identity.Infrastracture;
+using Suppliers.Identity.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped(typeof(EmailService));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
