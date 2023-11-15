@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../Components/Header";
-import { Container, Button, Dropdown, Form } from "react-bootstrap";
-import Tender from "./Tender";
+import { Container, Dropdown, Form, Button } from "react-bootstrap";
+import Contract from "./Contract";
 import Loader from "../../../Components/Loader/Loader";
 
-const TendersList = ({role}) => {
+const ContractsList = ({role}) => {
 
-    const [tenders, setTenders] = useState([]);
-    const [sortedFilteredtenders, setSortedFilteredTenders] = useState([]);
+    const [contracts, setContracts] = useState([]);
+    const [sortedFilteredContracts, setSortedFilteredContracts] = useState([]);
     const [isContentLoading, setIsContentLoading] = useState(true);
 
-    const [sortState, setSortState] = useState('description');
+    const [sortState, setSortState] = useState('date');
     const [sortOption, setSortOption] = useState('asc')
-    const [filterQuery, setFilterQuery] = useState({ beginning: '', ending: '', isClosed: 'all' });
+    const [filterQuery, setFilterQuery] = useState({ product: '', isConfirmed: 'all' }); 
 
-    async function getTenders() {
+    async function getContracts() {
         setIsContentLoading(true);
         const options = {
             method: 'GET',
@@ -22,64 +22,65 @@ const TendersList = ({role}) => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/tenders`, options);
+        var url = role === 'Supplier' ? 'https://localhost:7214/api/contracts/user-contracts' : 'https://localhost:7214/api/contracts';
+        const result = await fetch(url, options);
         if(result.ok){
             const info = await result.json();
-            setTenders(info.tenders);
-            setSortedFilteredTenders(info.tenders);
+            setContracts(info.contracts);
+            setSortedFilteredContracts(info.contracts);
         }
         setIsContentLoading(false);
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        var filteredList = tenders;
 
-        filteredList = filterQuery.beginning !== '' 
-            ? filteredList.filter(item => new Date(item.beginning) >= new Date(filterQuery.beginning))
-            : filteredList;
-        filteredList = filterQuery.ending !== ''
-            ? filteredList.filter(item => new Date(item.ending) <= new Date(filterQuery.ending))
-            : filteredList;
+        var filteredList = (filterQuery.product !== '')
+            ? contracts.filter(item => item.order.batch.product.name.includes(filterQuery.product))
+            : contracts;
 
-        if(filterQuery.isClosed === 'closed')
-            filteredList = filteredList.filter(item => !item.isOpen);
-        else if(filterQuery.isClosed === 'open')
-            filteredList = filteredList.filter(item => item.isOpen);
+        if(filterQuery.isConfirmed === 'confirmed')
+            filteredList = filteredList.filter(item => item.isConfirmed);
+        else if(filterQuery.isConfirmed === 'not-confirmed')
+            filteredList = filteredList.filter(item => !item.isConfirmed);
 
         var sortedList = [];
         switch(sortState) {
-            case 'description': {
-                sortedList = [...filteredList].sort((a, b) => a.description.localeCompare(b.description));
-                break;
-            }
             case 'date': {
                 sortedList = [...filteredList].sort((a, b) => {
-                    if (new Date(a.beginning) > new Date(b.beginning))
+                    if (new Date(a.conclusionDate) > new Date(b.conclusionDate))
                         return 1;
-                    else if(new Date(a.beginning) < new Date(b.beginning))
+                    else if(new Date(a.conclusionDate) < new Date(b.conclusionDate))
                         return -1;
                     else return 0;
                 });
+                break;
+            }
+            case 'quantity': {
+                sortedList = [...filteredList].sort((a, b) => a.order.batch.quantity - b.order.batch.quantity);
+                break;
+            }
+            case 'price': {
+                sortedList = [...filteredList].sort((a, b) => a.order.orderPrice - b.order.OrderPrice);
                 break;
             }
         }
 
         sortOption === 'desc' && sortedList.reverse();
 
-        setSortedFilteredTenders(sortedList);
+        setSortedFilteredContracts(sortedList);
         document.body.click();
     };
 
     const handleReset = () => {
-        setSortedFilteredTenders(tenders);
-        setFilterQuery({ beginning: '', ending: '', isClosed: 'all' });
-        setSortState('description');
+        setSortedFilteredContracts(contracts);
+        setFilterQuery({ product: '', isConfirmed: 'all' });
+        setSortState('date');
         document.body.click();
-    };
+    } 
 
     useEffect(() => {
-        getTenders();
+        getContracts();
     }, []);
 
     return (
@@ -91,16 +92,8 @@ const TendersList = ({role}) => {
                 <Loader/>
             </Container>
             :
-            <Container className="content-container">
-                {role ==='Client'
-                ?
-                <div className='items-header'>
-                    <h3>Список опубликованных тендеров</h3>
-                    <Button variant='warning' href='/client/tenders/add'>Добавить</Button>
-                </div>
-                :
-                <h3>Список опубликованных тендеров</h3>
-                }
+            <Container className='content-container'>
+                <h3 style={{marginBottom: '20px'}}>Список заказов</h3>
                 <hr></hr>
                 <Dropdown style={{textAlign: 'right'}} drop='start'>
                     <Dropdown.Toggle size='sm' variant="outline" id="dropdown-basic">
@@ -114,8 +107,9 @@ const TendersList = ({role}) => {
                                 <Form.Group className="mb-3">
                                     <Form.Label>Параметр</Form.Label>
                                     <Form.Select type="text" required value={sortState} onChange={(e) => setSortState(e.target.value)}>
-                                        <option value='description'>По описанию</option>
-                                        <option value='date'>По дате начала</option>
+                                        <option value='date'>По дате</option>
+                                        <option value='quantity'>По количеству товара</option>
+                                        <option value='price'>По стоимости заказа</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group>
@@ -131,22 +125,17 @@ const TendersList = ({role}) => {
                         <Dropdown.ItemText style={{marginBottom: '10px'}}>
                             <Form onSubmit={(e) => handleSubmit(e)}>
                                 <Form.Group>
-                                    <Form.Label>Дата начала</Form.Label>
-                                    <Form.Control type='date' value={filterQuery.beginning}
-                                        onChange={(e) => setFilterQuery({...filterQuery, beginning: e.target.value})}/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Дата окончания</Form.Label>
-                                    <Form.Control type='date' value={filterQuery.ending}
-                                        onChange={(e) => setFilterQuery({...filterQuery, ending: e.target.value})}/>
+                                    <Form.Label>Товар</Form.Label>
+                                    <Form.Control type='text' value={filterQuery.product}
+                                        onChange={(e) => setFilterQuery({...filterQuery, product: e.target.value})}/>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Статус</Form.Label>
-                                    <Form.Select type="text" required value={filterQuery.isClosed}
-                                        onChange={(e) => setFilterQuery({...filterQuery, isClosed: e.target.value})}>
+                                    <Form.Select type="text" required value={filterQuery.isConfirmed}
+                                        onChange={(e) => setFilterQuery({...filterQuery, isConfirmed: e.target.value})}>
                                         <option value='all'>Любой</option>
-                                        <option value='open'>Открыт</option>
-                                        <option value='closed'>Закрыт</option>
+                                        <option value='confirmed'>Подтверждённый</option>
+                                        <option value='not-confirmed'>Не подтверждённый</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <div style={{marginTop: '20px'}}>
@@ -157,16 +146,17 @@ const TendersList = ({role}) => {
                         </Dropdown.ItemText>
                     </Dropdown.Menu>
                 </Dropdown>
-                {tenders.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список тендеров пуст</h4>}
+                {sortedFilteredContracts.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список заказов пуст</h4>}
                 <div>
-                    {sortedFilteredtenders.map(item => 
-                        <Tender key={item.id} item={item} role={role} tenders={tenders} setTenders={setTenders}/>
+                    {sortedFilteredContracts.map(item => 
+                        <Contract key={item.id} item={item} role={role} contracts={contracts} setContracts={setContracts}
+                            setSortedFilteredContracts={setSortedFilteredContracts}/>
                     )}
                 </div>
             </Container>
             }
         </>
     );
-};
+}
 
-export default TendersList;
+export default ContractsList;

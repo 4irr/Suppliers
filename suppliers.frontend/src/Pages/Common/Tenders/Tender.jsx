@@ -33,6 +33,12 @@ const Tender = ({item, role, tenders, setTenders}) => {
         router(`/client/tenders/${item.id}/suppliers-list`, { state: { tender: item }})
     };
 
+    const dateOptions = {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }
+
     useEffect(() => {
         loadUser().then(value => {
             if(value!==null)
@@ -44,8 +50,8 @@ const Tender = ({item, role, tenders, setTenders}) => {
         <Alert variant={item.isOpen ? 'info' : 'danger'} className="product">
             <h3 style={{marginBottom: '30px'}}>{item.title}</h3>
             <p><b>Описание тендера:</b> {item.description}</p>
-            <p><b>Дата начала тендера:</b> {item.beginning}</p>
-            <p><b>Дата окончания тендера:</b> {item.ending}</p>
+            <p><b>Дата начала тендера:</b> {new Date(item.beginning).toLocaleDateString('ru-RU', dateOptions)}</p>
+            <p><b>Дата окончания тендера:</b> {new Date(item.ending).toLocaleDateString('ru-RU', dateOptions)}</p>
             <p><b>Статус:</b> {item.isOpen ? 'открыт' : 'закрыт'}</p>
             { role === 'Client' && 
             <div>

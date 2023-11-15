@@ -24,7 +24,7 @@ namespace Suppliers.Application.Products.Queries.GetProductList
                 .ForMember(productDto => productDto.Quantity,
                     opt => opt.MapFrom(product => product.Quantity))
                 .ForMember(productDto => productDto.ExpirationDate,
-                    opt => opt.MapFrom(product => product.ExpirationDate.ToLongDateString()));
+                    opt => opt.MapFrom(product => product.ExpirationDate.Date.ToString()));
         }
     }
 }

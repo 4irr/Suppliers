@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import '../../../App.css';
-import {  Button, Container, Dropdown, Form } from 'react-bootstrap';
+import { Button, Container, Dropdown, Form } from 'react-bootstrap';
+import Product from './Product';
 import Header from '../../../Components/Header';
-import Supplier from './Supplier';
 import Loader from '../../../Components/Loader/Loader';
+import { useParams } from 'react-router-dom';
 
-const SuppliersList = () => {
+const ProductList = ({role}) => {
 
-    const [suppliers, setSuppliers] = useState([]);
-    const [sortedFilteredSuppliers, setSortedFilteredSuppliers] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [sortedFilteredProducts, setSortedFilteredProducts] = useState([]);
     const [isContentLoading, setIsContentLoading] = useState(true);
 
-    const [sortState, setSortState] = useState('firstName');
+    const [sortState, setSortState] = useState('price');
     const [sortOption, setSortOption] = useState('asc')
-    const [filterQuery, setFilterQuery] = useState({ organization: '', isLicensed: 'all' }); 
+    const [filterQuery, setFilterQuery] = useState({ name: '', expirationDate: '' });
 
-    async function getSuppliers() {
+    const params = useParams();
+
+    async function getProducts() {
         setIsContentLoading(true);
         const options = {
             method: 'GET',
@@ -23,48 +26,46 @@ const SuppliersList = () => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/users/suppliers`, options);
+        var url = role === 'Supplier' ? 'https://localhost:7214/api/Products' : `https://localhost:7214/api/Products/supplier/${params.id}`;
+        const result = await fetch(url, options);
         if(result.ok){
             const info = await result.json();
-            setSuppliers(info.suppliers);
-            setSortedFilteredSuppliers(info.suppliers);
+            setProducts(info.products);
+            setSortedFilteredProducts(info.products);
         }
         setIsContentLoading(false);
     }
 
-    const handleSubmit = (e) => {        
+    const handleSubmit = (e) => {
         e.preventDefault();
-        
-        var filteredList = (filterQuery.organization !== '')
-            ? suppliers.filter(item => item.organization.includes(filterQuery.organization))
-            : suppliers;
+        var filteredList = (filterQuery.name !== '')
+            ? products.filter(item => item.name.includes(filterQuery.name))
+            : products;
 
-        if(filterQuery.isLicensed === 'licensed')
-            filteredList = filteredList.filter(item => item.isLicensed);
-        else if(filterQuery.isLicensed === 'not-licensed')
-            filteredList = filteredList.filter(item => !item.isLicensed);
+        if(filterQuery.expirationDate !== '')
+            filteredList = filteredList.filter(item => new Date(item.expirationDate) >= new Date(filterQuery.expirationDate));
 
-        var sortedList = (sortOption === 'asc') 
-            ? [...filteredList].sort((a, b) => a[sortState].localeCompare(b[sortState]))
-            : [...filteredList].sort((a, b) => b[sortState].localeCompare(a[sortState]));
-        setSortedFilteredSuppliers(sortedList);
+        var sortedList = [...filteredList].sort((a, b) => a[sortState] - b[sortState]);
+        sortOption === 'desc' && sortedList.reverse();
+
+        setSortedFilteredProducts(sortedList);
         document.body.click();
     };
 
     const handleReset = () => {
-        setSortedFilteredSuppliers(suppliers);
-        setFilterQuery({ organization: '', isLicensed: 'all' });
-        setSortState('firstName');
+        setSortedFilteredProducts(products);
+        setFilterQuery({ name: '', expirationDate: '' });
+        setSortState('price');
         document.body.click();
-    } 
+    };
 
     useEffect(() => {
-        getSuppliers();
+        getProducts();
     }, []);
-
+    
     return (
         <>
-            <Header role='Client'/>
+            <Header role={role}/>
             {isContentLoading
             ?
             <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
@@ -72,7 +73,10 @@ const SuppliersList = () => {
             </Container>
             :
             <Container className='content-container'>
-                <h3>Список поставщиков</h3>
+                <div className='items-header'>
+                    <h3>Список товаров</h3>
+                    {role === 'Supplier' && <Button variant='warning' href='/supplier/products/add'>Добавить</Button>}
+                </div>
                 <hr></hr>
                 <Dropdown style={{textAlign: 'right'}} drop='start'>
                     <Dropdown.Toggle size='sm' variant="outline" id="dropdown-basic">
@@ -86,8 +90,8 @@ const SuppliersList = () => {
                                 <Form.Group className="mb-3">
                                     <Form.Label>Параметр</Form.Label>
                                     <Form.Select type="text" required value={sortState} onChange={(e) => setSortState(e.target.value)}>
-                                        <option value='firstName'>По имени</option>
-                                        <option value='organization'>По организации</option>
+                                        <option value='price'>По цене</option>
+                                        <option value='quantity'>По количеству</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group>
@@ -103,18 +107,14 @@ const SuppliersList = () => {
                         <Dropdown.ItemText style={{marginBottom: '10px'}}>
                             <Form onSubmit={(e) => handleSubmit(e)}>
                                 <Form.Group>
-                                    <Form.Label>Организация</Form.Label>
-                                    <Form.Control type='text' value={filterQuery.organization}
-                                        onChange={(e) => setFilterQuery({...filterQuery, organization: e.target.value})}/>
+                                    <Form.Label>Название</Form.Label>
+                                    <Form.Control type='text' value={filterQuery.name}
+                                        onChange={(e) => setFilterQuery({...filterQuery, name: e.target.value})}/>
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label>Статус</Form.Label>
-                                    <Form.Select type="text" required value={filterQuery.isLicensed}
-                                        onChange={(e) => setFilterQuery({...filterQuery, isLicensed: e.target.value})}>
-                                        <option value='all'>Любой</option>
-                                        <option value='licensed'>Лицензированный</option>
-                                        <option value='not-licensed'>Не лицензированный</option>
-                                    </Form.Select>
+                                    <Form.Label>Годен до</Form.Label>
+                                    <Form.Control type='date' value={filterQuery.expirationDate}
+                                        onChange={(e) => setFilterQuery({...filterQuery, expirationDate: e.target.value})}/>
                                 </Form.Group>
                                 <div style={{marginTop: '20px'}}>
                                     <Button type='submit' variant='outline-primary' style={{marginRight: '10px'}}>Применить</Button>
@@ -124,10 +124,11 @@ const SuppliersList = () => {
                         </Dropdown.ItemText>
                     </Dropdown.Menu>
                 </Dropdown>
-                {sortedFilteredSuppliers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список поставщиков пуст</h4>}
+                {sortedFilteredProducts.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список товаров пуст</h4>}
                 <div>
-                    {sortedFilteredSuppliers.map(item => 
-                        <Supplier key={item.id} item={item}>{item.firstName}</Supplier>
+                    {sortedFilteredProducts.map(item => 
+                        <Product key={item.id} item={item} role={role} products={products} supplierId={params.id} 
+                            setProducts={setProducts} setSortedFilteredProducts={setSortedFilteredProducts}/>
                     )}
                 </div>
             </Container>
@@ -136,4 +137,4 @@ const SuppliersList = () => {
     );
 }
 
-export default SuppliersList;
+export default ProductList;

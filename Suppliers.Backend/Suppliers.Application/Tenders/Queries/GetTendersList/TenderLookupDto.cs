@@ -25,9 +25,9 @@ namespace Suppliers.Application.Tenders.Queries.GetTendersList
                 .ForMember(dto => dto.Description,
                     opt => opt.MapFrom(tender => tender.Description))
                 .ForMember(dto => dto.Beginning,
-                    opt => opt.MapFrom(tender => tender.Beginning.ToLongDateString()))
+                    opt => opt.MapFrom(tender => tender.Beginning.Date.ToString()))
                 .ForMember(dto => dto.Ending,
-                    opt => opt.MapFrom(tender => tender.Ending.ToLongDateString()))
+                    opt => opt.MapFrom(tender => tender.Ending.Date.ToString()))
                 .ForMember(dto => dto.tenderUsers,
                     opt => opt.MapFrom(tender => tender.tenderUsers))
                 .ForMember(dto => dto.IsOpen,

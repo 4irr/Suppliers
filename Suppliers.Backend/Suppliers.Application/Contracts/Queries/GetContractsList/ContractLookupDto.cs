@@ -19,7 +19,7 @@ namespace Suppliers.Application.Contracts.Queries.GetContractsList
                 .ForMember(dto => dto.Order,
                     opt => opt.MapFrom(contract => contract.Order))
                 .ForMember(dto => dto.ConclusionDate,
-                    opt => opt.MapFrom(contract => contract.ConclusionDate.ToLongDateString()))
+                    opt => opt.MapFrom(contract => contract.ConclusionDate.Date.ToString()))
                 .ForMember(dto => dto.IsConfirmed,
                     opt => opt.MapFrom(contract => contract.IsConfirmed));
         }
