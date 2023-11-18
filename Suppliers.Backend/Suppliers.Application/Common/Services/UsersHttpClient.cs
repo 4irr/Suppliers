@@ -1,7 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Suppliers.Application.Common.Exceptions;
 using Suppliers.Application.Interfaces;
 using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
+using Suppliers.Application.Users.Commands.ChangePassword;
+using Suppliers.Application.Users.Commands.UpdateUser;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -83,6 +88,28 @@ namespace Suppliers.Application.Common.Services
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception("Failed to confirm user license");
+            }
+        }
+
+        public async Task UpdateUser(EditUserDto dto)
+        {
+            var response = await apiClient.PutAsJsonAsync(apiUrl + $"/localApi/users", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to update user info");
+            }
+        }
+
+        public async Task ChangePassword(ChangePasswordDto dto)
+        {
+            var response = await apiClient.PutAsJsonAsync(apiUrl + $"/localApi/users/password", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                    throw new BadRequestException(await response.Content.ReadAsStringAsync());
+                throw new Exception("Failed to change user password");
             }
         }
     }

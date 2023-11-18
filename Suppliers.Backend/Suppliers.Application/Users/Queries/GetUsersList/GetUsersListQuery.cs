@@ -2,7 +2,7 @@
 
 namespace Suppliers.Application.Suppliers.Queries.GetSuppliersList
 {
-    public class GetSuppliersListQuery : IRequest<SuppliersListVm>
+    public class GetUsersListQuery : IRequest<UsersListVm>
     {
     }
 }

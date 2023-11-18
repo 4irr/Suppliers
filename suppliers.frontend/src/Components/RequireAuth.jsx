@@ -8,9 +8,9 @@ const RequireAuth = ({role, children}) => {
     if(!sessionStorage.getItem('oidc.user:https://localhost:7073:suppliers-web-api')) {
         signinRedirect();
     }
-        else {
+    else {
         loadUser().then(value => {
-            if(value.profile.role !== role)
+            if(value.profile.role !== role && role !== undefined)
                 router('/');
         });
     }

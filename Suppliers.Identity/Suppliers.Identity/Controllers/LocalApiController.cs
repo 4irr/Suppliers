@@ -71,6 +71,7 @@ namespace Suppliers.Identity.Controllers
         public async Task<ActionResult> ConfirmUserLicense(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+
             if (user == null)
             {
                 return NotFound();
@@ -80,6 +81,48 @@ namespace Suppliers.Identity.Controllers
             await _userManager.UpdateAsync(user);
 
             return NoContent();
+        }
+
+        [HttpPut("users")]
+        public async Task<ActionResult> EditUser([FromBody] EditUserDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(dto.Id!);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FirstName = dto.FirstName!;
+            user.LastName = dto.LastName!;
+            user.Age = dto.Age;
+            user.Organization = dto.Organization;
+
+            await _userManager.UpdateAsync(user);
+
+            return NoContent();
+        }
+
+        [HttpPut("users/password")]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(dto.Id!);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            IdentityResult result = await _userManager.ChangePasswordAsync(user, dto.OldPassword!, dto.NewPassword!);
+
+            if (!result.Succeeded)
+            {
+                if(result.Errors.Any(e => e.Code == "PasswordMismatch"))
+                    return BadRequest("Старый пароль введён неверно");
+                return BadRequest("Не удалось изменить пароль (пароль должен содержать цифры и символы латинского алфавита)");
+            }
+
+            return Ok();
         }
     }
 }

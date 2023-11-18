@@ -46,13 +46,14 @@ const Header = ({role}) => {
                         :
                         <>
                             <h3 style={{color: "white", margin: '0 20px 0 0'}}>{role}</h3>
-                            { role === 'Supplier' && 
-                                <NavDropdown title="Меню" id="basic-nav-dropdown" menuVariant="light" style={{marginRight: '20px'}}>
-                                    <NavDropdown.ItemText>Поставщик</NavDropdown.ItemText>
-                                    <NavDropdown.Divider/>
-                                    <NavDropdown.Item href="/supplier/save-license">Загрузить лицензию</NavDropdown.Item>
-                                </NavDropdown>
-                            }
+                            <NavDropdown title="Меню" id="basic-nav-dropdown" menuVariant="light" style={{marginRight: '20px'}}>
+                                {role === 'Supplier' && <NavDropdown.ItemText>Поставщик</NavDropdown.ItemText>}
+                                {role === 'Client' && <NavDropdown.ItemText>Заказчик</NavDropdown.ItemText>}
+                                {role === 'Admin' && <NavDropdown.ItemText>Администратор</NavDropdown.ItemText>}
+                                <NavDropdown.Divider/>
+                                <NavDropdown.Item href="/user/profile">Мой профиль</NavDropdown.Item>
+                                {role === 'Supplier' && <NavDropdown.Item href="/supplier/save-license">Загрузить лицензию</NavDropdown.Item>}
+                            </NavDropdown>
                             <Button onClick={() => signoutRedirect({ 'id_token_hint': localStorage.getItem('id-token') })}>Выход</Button>
                         </>
                         }

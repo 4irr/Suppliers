@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { loadUser } from "../../../auth/user-service";
 import Loader from "../../../Components/Loader/Loader";
 
-const LoadLicense = () => {
+const SaveLicense = () => {
 
     const router = useNavigate();
     const [file, setFile] = useState();
@@ -91,4 +91,4 @@ const LoadLicense = () => {
     );
 };
 
-export default LoadLicense;
+export default SaveLicense;

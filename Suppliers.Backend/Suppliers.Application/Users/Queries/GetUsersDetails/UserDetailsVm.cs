@@ -4,13 +4,14 @@ using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
 
 namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
 {
-    public class SupplierDetailsVm : IMapWith<AppUserDto>
+    public class UserDetailsVm : IMapWith<AppUserDto>
     {
         public string? Id { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public int Age { get; set; }
         public string Email { get; set; } = null!;
+        public string Role { get; set; } = null!;
         public string? Organization { get; set; }
         public bool IsLicenseLoaded { get; set; }
         public bool IsLicensed { get; set; }
@@ -18,7 +19,7 @@ namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AppUserDto, SupplierDetailsVm>()
+            profile.CreateMap<AppUserDto, UserDetailsVm>()
                 .ForMember(vm => vm.Id,
                     opt => opt.MapFrom(dto => dto.Id))
                 .ForMember(vm => vm.FirstName,
@@ -29,6 +30,8 @@ namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
                     opt => opt.MapFrom(dto => dto.Age))
                 .ForMember(vm => vm.Email,
                     opt => opt.MapFrom(dto => dto.Email))
+                .ForMember(vm => vm.Role,
+                    opt => opt.MapFrom(dto => dto.Role))
                 .ForMember(vm => vm.Organization,
                     opt => opt.MapFrom(dto => dto.Organization))
                 .ForMember(vm => vm.IsLicenseLoaded,

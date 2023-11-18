@@ -3,7 +3,7 @@ import { Alert, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { loadUser } from "../../../auth/user-service";
 
-const Tender = ({item, role, tenders, setTenders}) => {
+const Tender = ({item, role, tenders, setTenders, setSortedFilteredTenders}) => {
 
     const router = useNavigate();
     const [userId, setUserId] = useState('');
@@ -17,7 +17,9 @@ const Tender = ({item, role, tenders, setTenders}) => {
         }
         const result = await fetch(`https://localhost:7214/api/tenders/${item.id}/remove`, options);
         if(result.ok) {
-            setTenders(tenders.filter(tender => tender.id !== item.id));
+            var newTenders = tenders.filter(tender => tender.id !== item.id);
+            setTenders(newTenders);
+            setSortedFilteredTenders(newTenders);
         }
     }
 

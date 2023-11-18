@@ -2,8 +2,8 @@
 
 namespace Suppliers.Application.Suppliers.Queries.GetSuppliersList
 {
-    public class SuppliersListVm
+    public class UsersListVm
     {
-        public IList<AppUserDto>? Suppliers { get; set; }
+        public IList<AppUserDto>? Users { get; set; }
     }
 }

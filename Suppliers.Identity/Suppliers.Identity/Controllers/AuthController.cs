@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Services;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Suppliers.Identity.Model;
@@ -106,14 +107,23 @@ namespace Suppliers.Identity.Controllers
             await _userManager.AddToRoleAsync(user, "Supplier");
             if(result.Succeeded)
             {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Auth",
-                    new { userId = user.Id, code = code },
-                    protocol: HttpContext.Request.Scheme);
-                await _emailService.SendEmailAsync(model.Email, "Confirm your account",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                try
+                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Auth",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                    await _emailService.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                }
+                catch(SmtpCommandException)
+                {
+                    ModelState.AddModelError("", "Неверный адрес электронной почты");
+                    await _userManager.DeleteAsync(user);
+                    return View(model);
+                }
 
                 return View("ConfirmRegister", "Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
             }

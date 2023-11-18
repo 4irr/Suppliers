@@ -160,7 +160,7 @@ const TendersList = ({role}) => {
                 {tenders.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список тендеров пуст</h4>}
                 <div>
                     {sortedFilteredtenders.map(item => 
-                        <Tender key={item.id} item={item} role={role} tenders={tenders} setTenders={setTenders}/>
+                        <Tender key={item.id} item={item} role={role} tenders={tenders} setTenders={setTenders} setSortedFilteredTenders={setSortedFilteredTenders}/>
                     )}
                 </div>
             </Container>

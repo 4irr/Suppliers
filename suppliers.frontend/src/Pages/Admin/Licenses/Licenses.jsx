@@ -17,10 +17,10 @@ const Licenses = () => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/users/suppliers`, options);
+        const result = await fetch(`https://localhost:7214/api/users`, options);
         if(result.ok){
             const info = await result.json();
-            setSuppliers(info.suppliers.filter(item => item.isLicenseLoaded && !item.isLicensed));
+            setSuppliers(info.users.filter(item => item.isLicenseLoaded && !item.isLicensed && item.role === 'Supplier'));
         }
         setIsContentLoading(false);
     }

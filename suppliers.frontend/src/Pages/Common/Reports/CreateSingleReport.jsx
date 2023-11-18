@@ -21,10 +21,10 @@ const CreateSingleReport = ({role}) => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/users/suppliers`, options);
+        const result = await fetch(`https://localhost:7214/api/users`, options);
         if(result.ok){
             const info = await result.json();
-            setSuppliers(info.suppliers);
+            setSuppliers(info.users.filter(item => item.role === 'Supplier'));
         }
         setIsContentLoading(false);
     }

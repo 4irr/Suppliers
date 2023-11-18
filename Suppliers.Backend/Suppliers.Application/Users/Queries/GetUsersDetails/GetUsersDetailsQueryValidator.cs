@@ -2,9 +2,9 @@
 
 namespace Suppliers.Application.Suppliers.Queries.GetSupplierDetails
 {
-    public class GetSupplierDetailsQueryValidator : AbstractValidator<GetSupplierDetailsQuery>
+    public class GetUsersDetailsQueryValidator : AbstractValidator<GetUsersDetailsQuery>
     {
-        public GetSupplierDetailsQueryValidator() 
+        public GetUsersDetailsQueryValidator() 
         {
             RuleFor(supplierDetailsQuery => supplierDetailsQuery.Id)
                 .NotEqual(Guid.Empty).WithMessage("Поле не должно быть пустым");

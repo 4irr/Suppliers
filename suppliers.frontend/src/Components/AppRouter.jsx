@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import SignoutOidc from '../auth/SignoutOidc';
 import SigninOidc from '../auth/SigninOidc';
@@ -8,6 +8,10 @@ import '../App.css';
 import { adminRoutes } from "../Router/AdminRoutes";
 import { supplierRoutes } from "../Router/SupplierRoutes";
 import { clientRoutes } from "../Router/ClientRoutes";
+import Profile from "../Pages/Common/Profile/Profile";
+import RequireAuth from "./RequireAuth";
+import EditInfo from "../Pages/Common/Profile/EditInfo";
+import ChangePassword from "../Pages/Common/Profile/ChangePassword";
 
 const AppRouter = () => {
 
@@ -21,6 +25,9 @@ const AppRouter = () => {
                         <Route path='/' Component={Home}/>
                         <Route path='/signin-oidc' Component={SigninOidc}/>
                         <Route path='/signout-oidc' Component={SignoutOidc}/>
+                        <Route path='/user/profile' element={<RequireAuth><Profile/></RequireAuth>}/>
+                        <Route path='/user/profile/edit' element={<RequireAuth><EditInfo/></RequireAuth>}/>
+                        <Route path='/user/profile/password' element={<RequireAuth><ChangePassword/></RequireAuth>}/>
                         {adminRoutes.map(route =>
                             <Route key={routeCounter++} path={route.path} element={route.element}/>
                         )}

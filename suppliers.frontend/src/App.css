@@ -46,3 +46,12 @@
 .contract-subrow p:last-child {
   padding: 10px 0;
 }
+
+.user-info-item {
+  display: flex;
+  align-items: center;
+}
+
+.user-info-item b {
+  margin-right: 5px;
+}

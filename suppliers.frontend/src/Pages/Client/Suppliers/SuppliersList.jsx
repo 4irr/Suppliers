@@ -23,11 +23,13 @@ const SuppliersList = () => {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         }
-        const result = await fetch(`https://localhost:7214/api/users/suppliers`, options);
+        const result = await fetch(`https://localhost:7214/api/users`, options);
         if(result.ok){
             const info = await result.json();
-            setSuppliers(info.suppliers);
-            setSortedFilteredSuppliers(info.suppliers);
+            var suppliers = info.users.filter(item => item.role === 'Supplier');
+            console.log(info.users);
+            setSuppliers(suppliers);
+            setSortedFilteredSuppliers(suppliers);
         }
         setIsContentLoading(false);
     }
