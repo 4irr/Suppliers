@@ -6,6 +6,7 @@ using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSupplierDetails;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
 using Suppliers.Application.Users.Commands.ChangePassword;
+using Suppliers.Application.Users.Commands.ConfirmRegister;
 using Suppliers.Application.Users.Commands.UpdateUser;
 using Suppliers.WebApi.Models.Users;
 
@@ -38,7 +39,9 @@ namespace Suppliers.WebApi.Controllers
         public async Task<ActionResult> GetUsersList()
         {
             var query = new GetUsersListQuery();
+
             var vm = await Mediator.Send(query);
+
             return Ok(vm);
         }
 
@@ -63,7 +66,9 @@ namespace Suppliers.WebApi.Controllers
             {
                 Id = id
             };
+
             var vm = await Mediator.Send(query);
+
             return Ok(vm);
         }
 
@@ -91,6 +96,7 @@ namespace Suppliers.WebApi.Controllers
                 FormFile = formFile,
                 FullPath = _appEnvironment.WebRootPath + "/Licenses/" + formFile.FileName
             };
+
             await Mediator.Send(command);
 
             return NoContent();
@@ -117,7 +123,9 @@ namespace Suppliers.WebApi.Controllers
             {
                 UserId = id
             };
+
             var dto = await Mediator.Send(command);
+
             return File(dto.FileStream!, dto.ContentType!, dto.FileName!);
         }
 
@@ -142,7 +150,9 @@ namespace Suppliers.WebApi.Controllers
             {
                 UserId = id
             };
+
             await Mediator.Send(command);
+
             return NoContent();
         }
 
@@ -166,6 +176,7 @@ namespace Suppliers.WebApi.Controllers
             var command = _mapper.Map<UpdateUserCommand>(dto);
             
             await Mediator.Send(command);
+
             return NoContent();
         }
 
@@ -189,6 +200,34 @@ namespace Suppliers.WebApi.Controllers
             var command = _mapper.Map<ChangePasswordCommand>(dto);
 
             await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Confirmes supplier registration
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// PUT /users/80094940-290E-4985-AE7C-9DCD85AED5BE/register/confirm
+        /// </remarks>
+        /// <param name="id">Supplier id (guid)</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpPut("{id}/register/confirm")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> ConfirmRegister(Guid id)
+        {
+            var command = new ConfirmRegisterCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
             return NoContent();
         }
     }

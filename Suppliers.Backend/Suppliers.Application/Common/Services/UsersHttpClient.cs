@@ -112,5 +112,22 @@ namespace Suppliers.Application.Common.Services
                 throw new Exception("Failed to change user password");
             }
         }
+
+        public async Task ConfirmRegister(Guid id)
+        {
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(apiUrl + $"/localApi/users/{id}/register/confirm"),
+                Content = new StringContent(id.ToString())
+            };
+
+            var response = await apiClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to confirm user registration");
+            }
+        }
     }
 }

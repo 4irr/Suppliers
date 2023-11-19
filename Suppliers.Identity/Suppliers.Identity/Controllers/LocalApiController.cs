@@ -20,6 +20,7 @@ namespace Suppliers.Identity.Controllers
         {
             var users = await _userManager.Users.ToListAsync();
             var result = new List<AppUserDto>();
+
             foreach(var user in users)
             {
                 result.Add(new AppUserDto   
@@ -34,7 +35,8 @@ namespace Suppliers.Identity.Controllers
                     IsLicenseLoaded = user.IsLicenseLoaded,
                     IsLicensed = user.IsLicensed,
                     LicensePath = user.LicensePath,
-                    EmailConfirmed = user.EmailConfirmed
+                    EmailConfirmed = user.EmailConfirmed,
+                    IsRegisterConfirmed = user.IsRegisterConfirmed
                 });
             }
             return Ok(result);
@@ -121,6 +123,22 @@ namespace Suppliers.Identity.Controllers
                     return BadRequest("Старый пароль введён неверно");
                 return BadRequest("Не удалось изменить пароль (пароль должен содержать цифры и символы латинского алфавита)");
             }
+
+            return Ok();
+        }
+
+        [HttpPut("users/{id}/register/confirm")]
+        public async Task<ActionResult> ConfirmRegister(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsRegisterConfirmed = true;
+            await _userManager.UpdateAsync(user);
 
             return Ok();
         }

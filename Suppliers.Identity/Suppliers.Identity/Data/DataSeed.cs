@@ -31,7 +31,8 @@ namespace Suppliers.Identity.Data
                     FirstName = "admin",
                     LastName = "admin",
                     Email = configuration.GetValue<string>("AdminEmail"),
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    IsRegisterConfirmed = true
                 };
                 var client = new AppUser
                 {
@@ -39,7 +40,8 @@ namespace Suppliers.Identity.Data
                     FirstName = "client",
                     LastName = "client",
                     Email = configuration.GetValue<string>("ClientEmail"),
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    IsRegisterConfirmed = true
                 };
 
                 var result = await userManager.CreateAsync(admin, "admin");

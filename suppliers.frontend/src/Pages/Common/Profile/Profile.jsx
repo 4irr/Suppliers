@@ -59,6 +59,7 @@ const Profile = () => {
                             <Button variant="outline-primary" className="w-100" onClick={handleEdit}>Редактировать личную информацию</Button>
                             <Button variant="outline-primary" className="w-100 my-3" onClick={handleChangePassword}>Изменить пароль</Button>
                             {user.role === 'Supplier' && <Button variant="outline-primary" className="w-100" href='/supplier/save-license'>Загрузить лицензию</Button>}
+                            {user.role === 'Admin' && <Button variant="outline-primary" className="w-100" href='/admin/accounts'>Подтверждение регистрации</Button>}
                         </div>
                         {user.role === 'Supplier' && <p><b>Статус: </b> 
                             {user.isLicensed

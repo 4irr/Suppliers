@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import '../../../App.css';
 import {  Button, Container, Dropdown, Form } from 'react-bootstrap';
 import Header from '../../../Components/Header';
-import Supplier from './Supplier';
+import Supplier from '../../Common/Suppliers/Supplier';
 import Loader from '../../../Components/Loader/Loader';
 
 const SuppliersList = () => {
@@ -27,7 +27,6 @@ const SuppliersList = () => {
         if(result.ok){
             const info = await result.json();
             var suppliers = info.users.filter(item => item.role === 'Supplier');
-            console.log(info.users);
             setSuppliers(suppliers);
             setSortedFilteredSuppliers(suppliers);
         }
@@ -129,7 +128,7 @@ const SuppliersList = () => {
                 {sortedFilteredSuppliers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список поставщиков пуст</h4>}
                 <div>
                     {sortedFilteredSuppliers.map(item => 
-                        <Supplier key={item.id} item={item}>{item.firstName}</Supplier>
+                        <Supplier key={item.id} item={item} role='Client'>{item.firstName}</Supplier>
                     )}
                 </div>
             </Container>

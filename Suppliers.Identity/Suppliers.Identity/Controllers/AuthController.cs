@@ -46,6 +46,7 @@ namespace Suppliers.Identity.Controllers
             }
 
             var user = await _userManager.FindByNameAsync(model.Username);
+
             if(user == null)
             {
                 ModelState.AddModelError("", "Неверный логин или пароль");
@@ -55,6 +56,12 @@ namespace Suppliers.Identity.Controllers
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                return View(model);
+            }
+
+            if (!user.IsRegisterConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "Дождитесь подтверждения регистрации администратором");
                 return View(model);
             }
 
@@ -100,7 +107,8 @@ namespace Suppliers.Identity.Controllers
                 Email = model.Email,
                 Organization = model.Organization,
                 IsLicenseLoaded = false,
-                IsLicensed = false
+                IsLicensed = false,
+                IsRegisterConfirmed = false
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
