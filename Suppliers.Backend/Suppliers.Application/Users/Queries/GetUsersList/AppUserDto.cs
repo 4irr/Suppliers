@@ -20,5 +20,6 @@ namespace Suppliers.Application.Suppliers.Queries.GetSuppliersList
         public string? LicensePath { get; set; }
         public bool EmailConfirmed { get; set; }
         public bool IsRegisterConfirmed { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }

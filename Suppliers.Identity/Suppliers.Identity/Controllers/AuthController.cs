@@ -14,9 +14,11 @@ namespace Suppliers.Identity.Controllers
         private readonly IIdentityServerInteractionService _interactionService;
         private readonly EmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly ValidateUserService _validateUserService;
 
         public AuthController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
-            IIdentityServerInteractionService interactionService, EmailService emailService, IConfiguration configuration)
+            IIdentityServerInteractionService interactionService, EmailService emailService,
+            IConfiguration configuration, ValidateUserService validateUserService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -25,6 +27,7 @@ namespace Suppliers.Identity.Controllers
             _emailService = emailService;
             _configuration = configuration;
             _configuration = configuration;
+            _validateUserService = validateUserService;
         }
 
         [HttpGet]
@@ -45,23 +48,10 @@ namespace Suppliers.Identity.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.FindByNameAsync(model.Username);
-
-            if(user == null)
+            var validationResult = await _validateUserService.ValidateAsync(model.Username);
+            if (!validationResult.Succeeded)
             {
-                ModelState.AddModelError("", "Неверный логин или пароль");
-                return View(model);
-            }
-
-            if (!await _userManager.IsEmailConfirmedAsync(user))
-            {
-                ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
-                return View(model);
-            }
-
-            if (!user.IsRegisterConfirmed)
-            {
-                ModelState.AddModelError(string.Empty, "Дождитесь подтверждения регистрации администратором");
+                ModelState.AddModelError("", validationResult.Message!);
                 return View(model);
             }
 
@@ -108,7 +98,8 @@ namespace Suppliers.Identity.Controllers
                 Organization = model.Organization,
                 IsLicenseLoaded = false,
                 IsLicensed = false,
-                IsRegisterConfirmed = false
+                IsRegisterConfirmed = false,
+                IsEnabled = true
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

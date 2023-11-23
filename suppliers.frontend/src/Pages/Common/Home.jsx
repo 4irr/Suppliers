@@ -4,8 +4,12 @@ import Header from "../../Components/Header";
 import { loadUser, signinRedirect } from "../../auth/user-service";
 import { useNavigate } from "react-router-dom";
 import Slider from "../../Components/Slider";
+import { useEffect } from "react";
+import { useState } from "react";
+import Loader from "../../Components/Loader/Loader";
 
 const Home = () => {
+
     var router = useNavigate();
 
     if(localStorage.getItem('isAuthenticated') === 'true' && !sessionStorage.getItem('oidc.user:https://localhost:7073:suppliers-web-api'))
@@ -36,7 +40,7 @@ const Home = () => {
         }
     });
 
-    return (
+    return (            
         <div>
             <Header/>
             <Slider/>

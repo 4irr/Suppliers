@@ -12,6 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DbConnection")
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(EmailService));
+builder.Services.AddScoped(typeof(ValidateUserService));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {

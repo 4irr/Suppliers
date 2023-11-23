@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import '../../../App.css';
-import {  Button, Container, Dropdown, Form } from 'react-bootstrap';
-import Header from '../../../Components/Header';
-import Supplier from '../../Common/Suppliers/Supplier';
-import Loader from '../../../Components/Loader/Loader';
-import SuppliersFilterOptions from '../../Common/Suppliers/SuppliersFilterOptions';
+import React from "react";
+import Header from "../../../Components/Header";
+import { Container, Dropdown, Form, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import Loader from "../../../Components/Loader/Loader";
+import Account from "./Account";
+import SuppliersFilterOptions from "../../Common/Suppliers/SuppliersFilterOptions";
 
-const SuppliersList = () => {
+const UserData = () => {
 
+    const [isContentLoading, setIsContentLoading] = useState(true);
     const [suppliers, setSuppliers] = useState([]);
     const [sortedFilteredSuppliers, setSortedFilteredSuppliers] = useState([]);
-    const [isContentLoading, setIsContentLoading] = useState(true);
 
     const [sortState, setSortState] = useState('firstName');
     const [sortOption, setSortOption] = useState('asc')
@@ -23,20 +23,20 @@ const SuppliersList = () => {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
-        }
-        const result = await fetch(`https://localhost:7214/api/users`, options);
-        if(result.ok){
+        };
+        const result = await fetch('https://localhost:7214/api/users', options);
+        if(result.ok) {
             const info = await result.json();
-            var suppliers = info.users.filter(item => item.role === 'Supplier');
+            const suppliers = info.users.filter(user => user.role === 'Supplier');
             setSuppliers(suppliers);
             setSortedFilteredSuppliers(suppliers);
         }
         setIsContentLoading(false);
     }
 
-    const handleSubmit = (e) => {        
+    const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         var filteredList = (filterQuery.organization !== '')
             ? suppliers.filter(item => item.organization.includes(filterQuery.organization))
             : suppliers;
@@ -63,7 +63,7 @@ const SuppliersList = () => {
         setFilterQuery({ organization: '', isLicensed: 'all', isEnabled: 'all' });
         setSortState('firstName');
         document.body.click();
-    } 
+    };
 
     useEffect(() => {
         getSuppliers();
@@ -71,28 +71,26 @@ const SuppliersList = () => {
 
     return (
         <>
-            <Header role='Client'/>
+            <Header role='Admin'/>
             {isContentLoading
             ?
             <Container style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh"}}>
                 <Loader/>
             </Container>
             :
-            <Container className='content-container'>
-                <h3>Список поставщиков</h3>
+            <Container className="content-container">
+                <h2>Работа с данными пользователей</h2>
                 <hr></hr>
                 <SuppliersFilterOptions sortState={sortState} setSortState={setSortState} setSortOption={setSortOption}
                     filterQuery={filterQuery} setFilterQuery={setFilterQuery} handleSubmit={handleSubmit} handleReset={handleReset}/>
-                {sortedFilteredSuppliers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список поставщиков пуст</h4>}
-                <div>
-                    {sortedFilteredSuppliers.map(item => 
-                        <Supplier key={item.id} item={item} role='Client'>{item.firstName}</Supplier>
-                    )}
-                </div>
+                {sortedFilteredSuppliers.length === 0 && <h4 style={{marginTop: '150px', textAlign: 'center'}}>Список пользователей пуст</h4>}
+                {sortedFilteredSuppliers.map(item => 
+                    <Account key={item.id} item={item} suppliers={suppliers} setSuppliers={setSuppliers}/>
+                )}
             </Container>
             }
         </>
     );
-}
+};
 
-export default SuppliersList;
+export default UserData;

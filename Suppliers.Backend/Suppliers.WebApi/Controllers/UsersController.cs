@@ -5,8 +5,10 @@ using Suppliers.Application.Suppliers.Commands.ConfirmLicense;
 using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSupplierDetails;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
+using Suppliers.Application.Users.Commands.BlockUser;
 using Suppliers.Application.Users.Commands.ChangePassword;
 using Suppliers.Application.Users.Commands.ConfirmRegister;
+using Suppliers.Application.Users.Commands.UnlockUser;
 using Suppliers.Application.Users.Commands.UpdateUser;
 using Suppliers.WebApi.Models.Users;
 
@@ -205,7 +207,7 @@ namespace Suppliers.WebApi.Controllers
         }
 
         /// <summary>
-        /// Confirmes supplier registration
+        /// Confirms supplier registration
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -222,6 +224,60 @@ namespace Suppliers.WebApi.Controllers
         public async Task<ActionResult> ConfirmRegister(Guid id)
         {
             var command = new ConfirmRegisterCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Blocks user by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// PUT /users/876394B5-997A-439C-B0C9-FAAA220A4905/block
+        /// </remarks>
+        /// <param name="id">Supplier id (guid)</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpPut("{id}/block")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> BlockUser(Guid id)
+        {
+            var command = new BlockUserCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Unlocks user by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// PUT /users/04ECFB51-9D77-4B69-A9D1-F50FEAF53C79/unlock
+        /// </remarks>
+        /// <param name="id">Supplier id (guid)</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpPut("{id}/unlock")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> UnlockUser(Guid id)
+        {
+            var command = new UnlockUserCommand
             {
                 Id = id
             };

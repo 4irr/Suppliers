@@ -22,5 +22,9 @@ namespace Suppliers.Application.Interfaces
         Task ChangePassword(ChangePasswordDto dto);
 
         Task ConfirmRegister(Guid id);
+
+        Task BlockUser(Guid id);
+
+        Task UnlockUser(Guid id);
     }
 }

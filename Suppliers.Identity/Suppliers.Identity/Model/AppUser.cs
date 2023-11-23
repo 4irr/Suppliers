@@ -12,5 +12,6 @@ namespace Suppliers.Identity.Model
         public bool IsLicensed { get; set; }
         public string? LicensePath { get; set; }
         public bool IsRegisterConfirmed { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }

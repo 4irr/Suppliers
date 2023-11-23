@@ -37,7 +37,8 @@ const Supplier = ({item, suppliers, setSuppliers, role}) => {
     };
 
     return(
-        <Alert variant={alertVariant} className="my-4">
+        <Alert variant={item.isEnabled ? alertVariant : 'danger'} className="my-4">
+            {!item.isEnabled && <h4 className="text-danger">Пользователь заблокирован</h4>}
             <p><b>Имя:</b> {item.firstName}</p>
             <p><b>Фамилия:</b> {item.lastName}</p>
             <p><b>Организация:</b> {item.organization}</p>
@@ -46,7 +47,7 @@ const Supplier = ({item, suppliers, setSuppliers, role}) => {
             ?
             <div>
                 <p><b>Статус:</b> {item.isLicensed ? 'лицензированный поставщик' : 'лицензия не подтверждена'}</p>
-                <Button href={`/client/suppliers/${item.id}/products`}>Предлагаемые товары</Button>
+                {item.isEnabled && <Button href={`/client/suppliers/${item.id}/products`}>Предлагаемые товары</Button>}
             </div>
             :
             <div>

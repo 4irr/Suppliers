@@ -36,7 +36,8 @@ namespace Suppliers.Identity.Controllers
                     IsLicensed = user.IsLicensed,
                     LicensePath = user.LicensePath,
                     EmailConfirmed = user.EmailConfirmed,
-                    IsRegisterConfirmed = user.IsRegisterConfirmed
+                    IsRegisterConfirmed = user.IsRegisterConfirmed,
+                    IsEnabled = user.IsEnabled
                 });
             }
             return Ok(result);
@@ -138,6 +139,38 @@ namespace Suppliers.Identity.Controllers
             }
 
             user.IsRegisterConfirmed = true;
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
+        }
+
+        [HttpPut("users/{id}/block")]
+        public async Task<ActionResult> BlockUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsEnabled = false;
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
+        }
+
+        [HttpPut("users/{id}/unlock")]
+        public async Task<ActionResult> UnlockUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsEnabled = true;
             await _userManager.UpdateAsync(user);
 
             return Ok();
