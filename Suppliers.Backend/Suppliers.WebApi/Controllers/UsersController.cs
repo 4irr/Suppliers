@@ -6,6 +6,7 @@ using Suppliers.Application.Suppliers.Commands.LoadLicense;
 using Suppliers.Application.Suppliers.Queries.GetSupplierDetails;
 using Suppliers.Application.Suppliers.Queries.GetSuppliersList;
 using Suppliers.Application.Users.Commands.BlockUser;
+using Suppliers.Application.Users.Commands.CalculateUserActivity;
 using Suppliers.Application.Users.Commands.ChangePassword;
 using Suppliers.Application.Users.Commands.ConfirmRegister;
 using Suppliers.Application.Users.Commands.UnlockUser;
@@ -285,6 +286,30 @@ namespace Suppliers.WebApi.Controllers
             await Mediator.Send(command);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Calculates users activity
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// POST /users/activity
+        /// </remarks>
+        /// <param name="dto">CalculateUserActivityDto object</param>
+        /// <returns>Returns UserActivityVm</returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">If user is unauthorized</response>
+        [HttpPost("activity")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> CalculateActivity(CalculateUserActivityDto dto)
+        {
+            var command = _mapper.Map<CalculateUserActivityCommand>(dto);
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
         }
     }
 }
