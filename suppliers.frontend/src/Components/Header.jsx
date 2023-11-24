@@ -6,7 +6,9 @@ const Header = ({role}) => {
     return (
         <Navbar expand="lg" variant="dark" bg="dark" className="bg-body-dark">
             <Container>
-                <Navbar.Brand href="/">Suppliers</Navbar.Brand>
+                <Navbar.Brand href={role===undefined ? '/' : (role === 'Admin' ? '/admin' : (role === 'Client' ? '/client' : '/supplier'))}>
+                    Suppliers
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav" style={{background: "transparent", borderRadius: "10px", padding: "10px", margin: "20px 0"}}>
                     { role === undefined &&

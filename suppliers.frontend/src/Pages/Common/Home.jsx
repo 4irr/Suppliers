@@ -4,9 +4,6 @@ import Header from "../../Components/Header";
 import { loadUser, signinRedirect } from "../../auth/user-service";
 import { useNavigate } from "react-router-dom";
 import Slider from "../../Components/Slider";
-import { useEffect } from "react";
-import { useState } from "react";
-import Loader from "../../Components/Loader/Loader";
 
 const Home = () => {
 

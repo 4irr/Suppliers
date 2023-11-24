@@ -1,7 +1,10 @@
 import { Alert, Button } from "react-bootstrap";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Account = ({item, suppliers, setSuppliers}) => {
+
+    const router = useNavigate();
 
     async function blockUser() {
         const options = {
@@ -49,6 +52,10 @@ const Account = ({item, suppliers, setSuppliers}) => {
         unlockUser();
     }
 
+    const handleEdit = () => {
+        router('/admin/user-data/edit', { state: { item: item }});
+    }
+
     return (
         <Alert variant={item.isEnabled ? 'primary' : 'danger'} className="my-4">
             {!item.isEnabled && <h4 className="text-danger">Пользователь заблокирован</h4>}
@@ -70,15 +77,15 @@ const Account = ({item, suppliers, setSuppliers}) => {
                     <span className="text-danger">лицензия не подтверждена</span>
                 </p> 
             }
-            <p><b>Статус Email: </b>{item.isEmailConfirmed ? 'почта подтверждена' : 'почта не подтверждена' }</p>
+            <p><b>Статус Email: </b>{item.emailConfirmed ? 'почта подтверждена' : 'почта не подтверждена' }</p>
             <p><b>Регистрация: </b>{item.isRegisterConfirmed ? 'подтверждена' : 'не подтверждена' }</p>
             <div>
-                <Button variant="warning">Изменить</Button>
+                <Button variant="warning" onClick={handleEdit}>Изменить</Button>
                 {item.isEnabled
                 ?
                     <Button variant="danger" className="mx-3" onClick={handleBlock}>Заблокировать</Button>
                 :
-                    <Button variant="success" className="mx-3" onClick={unlockUser}>Разблокировать</Button>
+                    <Button variant="success" className="mx-3" onClick={handleUnlock}>Разблокировать</Button>
                 }
             </div>
         </Alert>

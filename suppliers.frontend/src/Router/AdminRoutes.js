@@ -5,6 +5,7 @@ import Licenses from "../Pages/Admin/Licenses/Licenses";
 import TendersList from "../Pages/Common/Tenders/TendersList";
 import ConfirmRegister from "../Pages/Admin/Accounts/ConfirmRegister";
 import UserData from "../Pages/Admin/Accounts/UserData";
+import EditUserData from "../Pages/Admin/Accounts/EditUserData";
 
 export const adminRoutes = [
     { path: '/admin', element: <RequireAuth role='Admin'><AdminHome/></RequireAuth>},
@@ -12,5 +13,6 @@ export const adminRoutes = [
     { path: '/admin/tenders', element: <RequireAuth role="Admin"><TendersList role='Admin'/></RequireAuth>},
     { path: '/admin/licenses', element: <RequireAuth role="Admin"><Licenses/></RequireAuth>},
     { path: '/admin/accounts', element: <RequireAuth role="Admin"><ConfirmRegister/></RequireAuth>},
-    { path: '/admin/user-data', element: <RequireAuth role="Admin"><UserData/></RequireAuth>}
+    { path: '/admin/user-data', element: <RequireAuth role="Admin"><UserData/></RequireAuth>},
+    { path: '/admin/user-data/edit', element: <RequireAuth role="Admin"><EditUserData/></RequireAuth>}
 ];
