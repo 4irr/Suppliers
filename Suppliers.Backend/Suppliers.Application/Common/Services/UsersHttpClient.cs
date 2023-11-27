@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Suppliers.Application.Common.Exceptions;
 using Suppliers.Application.Interfaces;
 using Suppliers.Application.Suppliers.Commands.LoadLicense;

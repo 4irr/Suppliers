@@ -22,6 +22,7 @@ namespace Suppliers.WebApi.Infrastructure
             if (!string.IsNullOrEmpty(authorizationHeader))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationHeader);
+
                 return await base.SendAsync(request, cancellationToken);
             }
 

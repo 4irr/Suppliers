@@ -1,11 +1,4 @@
-﻿using Suppliers.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Suppliers.Application.Reports.Commands.CreateReport
+﻿namespace Suppliers.Application.Reports.Commands.CreateReport
 {
     public class SingleReportVm
     {

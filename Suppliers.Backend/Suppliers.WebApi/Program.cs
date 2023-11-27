@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Suppliers.Application;
 using Suppliers.Application.Common.Mappings;
@@ -76,11 +77,12 @@ using(var scope = app.Services.CreateScope())
     try
     {
         var context = serviceProvider.GetRequiredService<SuppliersDbContext>();
-        DbInitializer.Initialize(context);
+        context.Database.Migrate();
     }
-    catch(Exception)
+    catch(Exception ex)
     {
-
+        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occured during migration");
     }
 }
 
