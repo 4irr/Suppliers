@@ -9,7 +9,7 @@ namespace Suppliers.WebApi.Infrastructure
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HttpClientAuthorizationDelegatingHandler(IHttpContextAccessor httpContextAccessor)
+        public HttpClientAuthorizationDelegatingHandler(IHttpContextAccessor httpContextAccessor) : base(new HttpClientHandler()) 
         {
             _httpContextAccessor = httpContextAccessor;
         }

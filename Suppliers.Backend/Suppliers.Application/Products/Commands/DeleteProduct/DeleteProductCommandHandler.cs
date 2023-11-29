@@ -16,7 +16,7 @@ namespace Suppliers.Application.Products.Commands.DeleteProduct
         {
             var entity = await _context.Products.FindAsync(new object[] { request.Id }, cancellationToken);
 
-            if (entity == null)
+            if (entity == null || entity.UserId != request.UserId)
             {
                 throw new NotFoundException(nameof(Product), request.Id);
             }
